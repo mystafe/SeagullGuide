@@ -1,0 +1,28 @@
+<div class="card mb-3">
+  <div class="row">
+    <div class="col-3 mb-3">
+      <img
+        src="<%= imageUrl%>"
+        class="img-fluid rounded"
+        style="object-fit: cover; max-height: 250px"
+        alt=""
+      />
+    </div>
+    <div class="col mb-9">
+      <div class="card-body">
+        <a style="text-decoration: none" href="/seagulls/<%=seagullId %> ">
+          <h3 class="card-title"><%= seagullName %></h3>
+        </a>
+        <p class="card-text">
+          <% expertises.forEach(ex => { %>
+          <strong
+            ><%= expertiseId==ex.expertiseId?ex.expertiseName:"" %>
+          </strong>
+          <% }) %>
+        </p>
+
+        <p class="card-text"><%= isAlive==1?"Alive":"Not alive" %></p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<%- include ("../partials/head",{title:"Seagull Edit"}) %> 
+  <body class="mx-3">
+    <%- include ("../partials/nav") %>
+
+    <h1 class="mb-3">Seagulls edit page</h1>
+
+    <div class="container mt-3">
+
+      <% if (seagullName&&action) { %>
+        <%- include("../partials/alert",{name: seagullName,action:action })%> 
+      <% } %>
+
+      <div class="row">
+        <div class="col-md-12 mt-3">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width: 50px;">id</th>
+                <th> Name</th>
+                <th>Expertise</th>
+                <th style="width: 200px;">ImageUrl</th>
+                <th>isAlive</th>
+                <th>isFavorite</th>
+                <th style="width: 120px;">Edit</th>
+
+              </tr>
+            </thead>
+              <tbody>
+
+                <% seagulls.forEach(seagull => { %>
+                <tr>
+                  <td><%=seagull.seagullId%></td>
+                  <td><%=seagull.seagullName%></td>
+                  <td><%=seagull.expertiseId%></td>
+                  <td> <img class="img-fluid" src= <%= seagull.imageUrl%>  alt="seagull"> </td>
+                  <td><%=seagull.isAlive%></td>
+                  <td><%=seagull.isFavorite%></td>
+                  <td>
+                    <button class="btn btn small btn-primary"> <a href="/admin/seagull/<%=seagull.seagullId%> ">📝</a></button>
+                    <button class="btn btn small btn-danger"> <a href="/admin/seagull/delete/<%=seagull.seagullId%> ">🗑️</a></button>     
+                </td>
+                  
+                <% }) %>
+              </tr>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <%- include ("adminCreateSeagull") %>
+
+    <%- include ("../partials/footer") %>
+  </body>
+</html>

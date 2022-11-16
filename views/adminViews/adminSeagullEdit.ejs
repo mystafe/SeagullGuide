@@ -1,0 +1,84 @@
+<%- include ("../partials/head",{title:"Seagull Edit"}) %> 
+  <body class="mx-3">
+
+
+    <%- include ("../partials/nav") %>
+
+    <h1 class="mb-3">Seagull edit page</h1>
+
+    <div class="container mt-3">
+
+
+          <div class="row">
+            <div class="col-md-12 mt-3">               
+              <form method="post" enctype="multipart/form-data">
+
+                <input type="hidden" name="seagullId" value="<%=seagull.seagullId%>">
+                <input type="hidden" name="image" value="<%=seagull.imageUrl%>">
+
+
+                <div class="row mb-3">
+                  <label for="name" class="col-sm-2 col-form-label">Name: </label>
+                  <div class="col-sm-8">
+                    <input class="form-control" type="text" id="name" name="name" value="<%=seagull.seagullName%>">
+                    </div>
+                  </div>
+                  
+                  <div class="row mb-3">
+                    <label for="image" class="col-sm-2 col-form-label">Image: </label>
+                    <div class="col-sm-8">
+                      <img src="/images/<%=seagull.imageUrl%> "  alt="" width="100;">
+                      <input class="form-control" type="file" id="image" name="image">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="expertise" class="col-sm-2 col-form-label">Expertise: </label>
+                    <div class="col-sm-8">
+                      <select name="expertise" id="expertise" class="form-select">
+                          <% expertises.forEach(ex => { %>
+                            <option <%=ex.expertiseId==seagull.expertiseId?"selected":""%> value= "<%=ex.expertiseId%>"><%= ex.expertiseName%></option>
+                          
+                          <% }) %>
+
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-sm-8 offset-sm-2">
+                      <div class="form-check">
+                        <input class="form-check-input" <%= seagull.isAlive==1?"checked":"" %>  type="checkbox" value="" id="isAlive" name="isAlive">
+                        <label class="form-check-label" for="isAlive">Alive?
+                        </label>
+                      </div>    
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-sm-8 offset-sm-2">
+                      <div class="form-check">
+                        <input class="form-check-input" <%= seagull.isFavorite==1?"checked":"" %> type="checkbox" value="" id="isFavorite" name="isFavorite">
+                        <label class="form-check-label" for="isFavorite">
+                          Is favorite?
+                        </label>
+                      </div>    
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-sm-8 offset-sm-2">
+                      <button type="submit" class="btn btn-primary">Update</button>    
+                    </div>
+                  </div>
+
+
+              </form>
+            </div>
+          </div>
+    </div>
+
+
+    <%- include ("../partials/footer") %>
+  </body>
+</html>

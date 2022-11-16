@@ -4,12 +4,24 @@
   "description": "Seagull guide",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon index.js"
   },
   "keywords": [
     "seagull",
     "bird"
   ],
   "author": "Mustafa Evleksiz",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.2.2",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^2.3.3",
+    "node-fetch": "^2.0.0",
+    "query-string": "^7.1.1",
+    "sequelize": "^6.25.6",
+    "sqlite3": "^5.1.2",
+    "superagent": "^8.0.0"
+  }
 }

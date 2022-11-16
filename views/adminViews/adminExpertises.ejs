@@ -1,0 +1,48 @@
+<%- include ("../partials/head",{title:"Expertises Edit"}) %> 
+  <body class="mx-3">
+
+    <%- include ("../partials/nav") %>
+
+    <h1 class="mb-3">Expertises edit page</h1>
+
+    <div class="container mt-3">
+
+      <% if (expertiseName&&action) { %>
+           <%- include("../partials/alert",{name: expertiseName,action:action })%> 
+      <% } %>
+      
+      <div class="row">
+        <div class="col-md-12 mt-3">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th style="width: 150px;">Edit</th>
+
+              </tr>
+            </thead>
+              <tbody>
+
+                <% expertises.forEach(expertise => { %>
+                  
+                <tr>
+                  <td><%=expertise.expertiseName%></td>
+                  <td>
+                    <button class="btn btn small btn-primary"> <a href="/admin/expertise/<%=expertise.expertiseId%> ">📝</a></button>
+                    <button class="btn btn small btn-danger"> <a href="/admin/expertise/delete/<%=expertise.expertiseId%> ">🗑️</a></button>     
+                </td>
+                  
+                <% }) %>
+                
+              </tr>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <%- include ("adminCreateExpertise") %>
+    <%- include ("../partials/footer") %>
+  </body>
+</html>

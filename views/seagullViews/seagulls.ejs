@@ -1,0 +1,27 @@
+<%- include ("../partials/head",{title:"Seagulls"}) %> 
+
+  <body class="mx-3">
+    <%- include ("../partials/nav") %>
+
+    <div class="container mt-3">
+      <h1 class="mb-3">Seagulls page</h1>
+      <div class="row">
+        <div class="col-md-3">
+          <%- include ("../expertiseViews/expertises",{expertises:expertises,isFavorite:null,expertiseId:0}) %>
+        </div>
+
+        <div class="col-md-9">
+
+          <% if (seagulls.length<5) { %>
+            <% seagulls.forEach(seagull => { %> 
+              <%- include("seagull",seagull,expertises)%>
+          <% }) %>
+         <% } %>
+
+ 
+          </div>
+      </div>                
+    </div>
+    <%- include ("../partials/footer") %>
+  </body>
+</html>
