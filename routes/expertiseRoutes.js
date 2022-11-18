@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const router = express.Router();
-const seagullController = require("../controllers/seagullController");
+
 const seagulls = [
   {
     seagullId: 1,
@@ -21,6 +21,15 @@ const seagulls = [
     isAlive: 1,
     isFavorite: 1,
   },
+  {
+    seagullId: 3,
+    seagullName: "test03",
+    expertiseId: 3,
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/a/a1/Swallow-tailed-gull.jpg",
+    isAlive: 1,
+    isFavorite: 1,
+  },
 ];
 
 const expertises = [
@@ -29,14 +38,22 @@ const expertises = [
   { expertiseId: 3, expertiseName: "test03" },
 ];
 
-//GetFavoriteSeagulls
-router.get("/favorites", seagullController.GetSeagulls);
-//GetSeagull
-router.get("/seagull/:seagullId", seagullController.GetSeagull);
-//GetSeagulls
-router.get("/seagulls", seagullController.GetSeagulls);
-//GetMainPage
-router.get("/", seagullController.GetMainPage);
+router.get("/expertise/:expertiseId", async (req, res) => {
+  const expertiseId = req.params.expertiseId;
+  const expertise = expertises[expertiseId - 1];
+  console.log(expertiseId);
+  const filteredSeagull = seagulls.filter(
+    (s) => s.expertiseId == expertise.expertiseId
+  );
+
+  console.log(filteredSeagull);
+  res.render("seagullViews/seagulls", {
+    seagulls: filteredSeagull,
+    expertiseId,
+    expertise,
+    expertises,
+  });
+});
 
 router.use(app);
 

@@ -1,25 +1,26 @@
 <%- include ("../partials/head",{title:"Seagull Detail"}) %> 
   <body class="mx-3">
+    
     <%- include ("../partials/nav") %>
 
     <h1 class="mb-3">Seagull detail page</h1>
+
+
     <p><strong>Seagull Id: </strong><%=seagull.seagullId %> <br /></p>
 
     <p><strong>Seagull Name: </strong><%= seagull.seagullName %></p>
 
-    <br />
     To return back click
+
     <a href="/seagulls">
       <img
         class="img-fluid rounded"
-
-      
         src="<%= seagull.imageUrl%>"
         alt="seagull"
        width="120"
       />
     </a>
-
     <%- include ("../partials/footer") %>
+
   </body>
 </html>

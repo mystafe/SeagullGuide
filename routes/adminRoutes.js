@@ -1,6 +1,13 @@
 const express = require("express");
 const app = express();
 const router = express.Router();
+const imageupload = require("../helpers/imageUpload");
+const fs = require("fs");
+
+const Seagull = require("../models/seagullModel");
+const Expertise = require("../models/expertiseModel");
+const seagullController = require("../controllers/seagullController");
+const expertiseController = require("../controllers/expertiseController");
 
 const seagulls = [
   {
@@ -28,84 +35,63 @@ const expertises = [
   { expertiseId: 2, expertiseName: "test02" },
   { expertiseId: 3, expertiseName: "test03" },
 ];
+//GetDeletedSeagull
+router.get(
+  "/admin/seagull/delete/:seagullId",
+  seagullController.GetDeletedSeagull
+);
+//DeleteSeagull
+router.post(
+  "/admin/seagull/delete/:seagullId",
+  seagullController.DeleteSeagull
+);
+//GetSeagullAdmin
+router.get("/admin/seagull/:seagullId", seagullController.GetSeagullAdmin);
+//UpdateSeagull
+router.post(
+  "/admin/seagull/:seagullId",
+  imageupload.upload.single("image"),
+  seagullController.UpdateSeagull
+);
+//GetSeagullsAdmin
+router.get("/admin/seagulls", seagullController.GetSeagullsAdmin);
 
-router.get("/admin/seagull/delete/:seagullId", async (req, res) => {
-  const seagullId = req.params.seagullId;
-  res.render("adminViews/adminSeagullDelete", {
-    seagull: seagulls[seagullId],
-  });
-});
+//createSeagull
+router.post(
+  "/admin/seagulls",
+  imageupload.upload.single("image"),
+  seagullController.CreateSeagull
+);
 
-router.post("/admin/seagull/delete/:seagullId", async function (req, res) {
-  const seagullId = req.params.seagullId;
-  const index = 0;
-  const page = 0;
-  res.redirect(
-    `/admin/seagulls?action=delete&seagullName=${seagulls[0].seagullName}`
-  );
-});
+//ExpertiseDelete
+router.post(
+  "/admin/expertise/delete/:expertiseId",
+  expertiseController.ExpertiseDelete
+);
+//GetDeletedExpertise
+router.get(
+  "/admin/expertise/delete/:expertiseId",
+  expertiseController.GetDeletedExpertise
+);
+//GetExpertiseAdmin
+router.get(
+  "/admin/expertise/:expertiseId",
+  expertiseController.GetExpertiseAdmin
+);
+//UpdateExpertise
+router.post(
+  "/admin/expertise/:expertiseId",
+  expertiseController.UpdateExpertise
+);
 
-router.get("/admin/seagulls", async (req, res) => {
-  res.render("adminViews/adminSeagulls", {
-    seagulls: seagulls,
-    seagullName: req.query.seagullName,
-    action: req.query.action,
-  });
-});
+//createExpertise
+router.post("/admin/expertises", expertiseController.createExpertise);
 
-//expertiseDelete
-router.post("/admin/expertise/delete/:expertiseId", async function (req, res) {
-  const expertiseId = req.params.expertiseId;
-  const index = 0;
-  const page = 0;
-  return res.redirect(
-    `/admin/expertises?action=delete&expertiseName=${expertises[0].expertiseName}`
-  );
-});
-router.get("/admin/expertise/delete/:expertiseId", async function (req, res) {
-  const expertiseId = req.params.expertiseId;
-  return res.render("adminViews/adminExpertiseDelete", {
-    expertise: expertises[0],
-  });
-});
+//GetExpertisesAdmin
+router.get("/admin/expertises", expertiseController.GetExpertisesAdmin);
 
-//admin Expertise edit
-router.get("/admin/expertise/:expertiseId", async function (req, res) {
-  const expertiseId = req.params.expertiseId;
-  try {
-    const expertise = expertises[expertiseId];
-
-    res.render("adminViews/adminExpertiseEdit", {
-      expertise: expertises[expertiseId],
-      page: 0,
-      index: 0,
-      expertiseId: expertiseId,
-      action: req.query.action,
-      action: req.query.expertiseName,
-    });
-  } catch (er) {
-    console.log(er);
-  }
-});
-
-router.post("/admin/expertise/:expertiseId", async function (req, res) {
-  //const seagullId = req.params.seagullId;
-  console.log("hiiii");
-  const expertiseId = req.params.expertiseId;
-  console.log(expertiseId);
-  const name = req.body.name;
-
-  return res.redirect(`/admin/expertises?action=update&expertiseName=${name}`);
-});
-
-//admin Expertise list
-router.get("/admin/expertises", async (req, res) => {
-  res.render("adminViews/adminExpertises", {
-    expertises: expertises,
-    expertiseName: req.query.expertiseName,
-    action: req.query.action,
-  });
-});
+//GetAdminPage
+router.get("/admin/", seagullController.GetAdminPage);
 
 router.use(app);
 

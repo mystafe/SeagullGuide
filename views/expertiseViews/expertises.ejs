@@ -1,9 +1,15 @@
 <ul class="list-group">
+  <a
+    href="/seagulls"
+    class="list-group-item list-group-item-action <%= expertiseId ==0?'active':'' %>"
+    >All Expertises <%=isFavorite?'in Favorites':'' %>
+  </a>
+  <% expertises.forEach(ex => { %>
+  <a
+    href="/expertise/<%= ex.expertiseId%>"
+    class="list-group-item <%= ex.expertiseId==expertiseId ?'active' :''%>"
+    ><%= ex.expertiseName %>
+  </a>
 
-  <a href="<%=isFavorite?'/favorites/expertises':'/seagulls' %>" class="list-group-item list-group-item-action <%= expertiseId ==0?'active':'' %>">All Expertises <%=isFavorite?'in Favorites':'' %> </a>
-    <% expertises.forEach(ex => { %>
-      <a href=<%=isFavorite?'/favorites/expertises/':'/seagulls/expertises/' %><%= ex.expertiseId%> class="list-group-item <%= ex.expertiseId==expertiseId ?'active' :''%> "><%= ex.expertiseName %>   </a>
-  
-    <% }) %>
-  
-  </ul>
+  <% }) %>
+</ul>
