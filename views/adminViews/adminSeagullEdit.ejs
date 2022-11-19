@@ -27,8 +27,7 @@
                   <div class="row mb-3">
                     <label for="image" class="col-sm-2 col-form-label">Image: </label>
                     <div class="col-sm-8">
-                      <%- include("../partials/image",{imageUrl:seagull.imageUrl,width:100})  %> 
-
+                        <%- include("../partials/image",{imageUrl:seagull.imageUrl,width:100})  %> 
                       <input class="form-control" type="file" id="image" name="image">
                     </div>
                   </div>
@@ -49,8 +48,9 @@
                   <div class="row mb-3">
                     <div class="col-sm-8 offset-sm-2">
                       <div class="form-check">
-                        <input class="form-check-input" <%= seagull.isAlive==1?"checked":"" %>  type="checkbox" value="" id="isAlive" name="isAlive">
-                        <label class="form-check-label" for="isAlive">Alive?
+                        <input class="form-check-input" <%= seagull.isFavorite==1?"checked":"" %> type="checkbox" value="" id="isFavorite" name="isFavorite">
+                        <label class="form-check-label" for="isFavorite">
+                          Is favorite?
                         </label>
                       </div>    
                     </div>
@@ -59,9 +59,8 @@
                   <div class="row mb-3">
                     <div class="col-sm-8 offset-sm-2">
                       <div class="form-check">
-                        <input class="form-check-input" <%= seagull.isFavorite==1?"checked":"" %> type="checkbox" value="" id="isFavorite" name="isFavorite">
-                        <label class="form-check-label" for="isFavorite">
-                          Is favorite?
+                        <input class="form-check-input" <%= seagull.isAlive==1?"checked":"" %>  type="checkbox" value="" id="isAlive" name="isAlive">
+                        <label class="form-check-label" for="isAlive">Alive?
                         </label>
                       </div>    
                     </div>

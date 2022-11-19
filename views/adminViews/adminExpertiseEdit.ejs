@@ -1,41 +1,54 @@
 <%- include ("../partials/head",{title:"Expertise Edit"}) %> 
   <body class="mx-3">
-
-
-
+    
     <%- include ("../partials/nav") %>
     
-    <h1 class="mb-3">Expertise edit page</h1>
+    <div class="container">
 
-    <div class="container mt-3">
-
+       <h1 class="mb-3">Expertise edit page</h1><hr>
 
           <div class="row">
-            <div class="col-md-12 mt-3">               
-              <form method="post">
 
-                <input type="hidden" name="expertiseId" value="<%=expertise.id%>" >
+            <div class="col-md-12 mt-3">   
 
+              <form method="post"  enctype="multipart/form-data">
+
+                <input type="hidden" name="id" value="<%=expertise.id%>">
+                  
                 <div class="row mb-3">
-                  <label for="name" class="col-sm-2 col-form-label">Name: </label>
+                  <label for="expertiseName" class="col-sm-2 col-form-label">Name: </label>
                   <div class="col-sm-8">
-                    <input class="form-control" type="text" id="name" name="name" value="<%=expertise.expertiseName%>">
+                    <input class="form-control" type="text" id="expertiseName" name="expertiseName" value="<%=expertise.expertiseName%>">
                     </div>
                   </div>
-                  
+
+                  <div class="row mb-3">
+                    <label for="iconUrl" class="col-sm-2 col-form-label">Icon: </label>
+                    <div class="col-sm-8">
+
+                      <% if (expertise.iconUrl!=null) { %>
+                       <img src="/images/<%=expertise.iconUrl%>" width="120"  alt="expertise">
+                      <% } %>  
+                      <input class="form-control" type="file" id="iconUrl" name="iconUrl">
+                      </div>
+                    </div>
+
                   <div class="row mb-3">
                     <div class="col-sm-8 offset-sm-2">
                       <button type="submit" class="btn btn-primary">Update</button>    
                     </div>
                   </div>
 
-
               </form>
+
             </div>
+
           </div>
+
     </div>
 
 
     <%- include ("../partials/footer") %>
+    
   </body>
 </html>

@@ -3,19 +3,24 @@ const Expertise = require("../models/expertiseModel");
 
 async function Populate() {
   const count = await Expertise.count();
+  console.log(count);
   if (count == 0) {
     await Expertise.bulkCreate([
       {
-        expertiseId: 1,
         expertiseName: "Friendly",
+        iconUrl: "friendly.png",
       },
       {
-        expertiseId: 2,
         expertiseName: "Fighter",
+        iconUrl: "fighter.png",
       },
       {
-        expertiseId: 3,
-        expertiseName: "Emotional",
+        expertiseName: "Brave",
+        iconUrl: "brave.png",
+      },
+      {
+        expertiseName: "Lovely",
+        iconUrl: "lovely.png",
       },
     ]);
 
@@ -28,12 +33,15 @@ async function Populate() {
       },
       {
         seagullName: "test02",
+        expertiseId: 2,
         imageUrl:
           "https://upload.wikimedia.org/wikipedia/commons/a/a1/Swallow-tailed-gull.jpg",
       },
       {
         seagullName: "Nazli",
         imageUrl: "Nazli_1668805251088.jpg",
+        expertiseId: 3,
+        isFavorite: true,
       },
       {
         seagullName: "Cemil",
@@ -43,6 +51,7 @@ async function Populate() {
       {
         seagullName: "Melek",
         imageUrl: "Melek_1668804961797.jpg",
+        isFavorite: true,
       },
     ]);
   }

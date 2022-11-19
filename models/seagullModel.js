@@ -10,11 +10,6 @@ const Seagull = sequelize.define("seagull", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  expertiseId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    defaultValue: 1,
-  },
   isFavorite: {
     type: DataTypes.BOOLEAN,
     allowNull: true,

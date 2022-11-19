@@ -4,10 +4,28 @@ const seagullRoutes = require("./routes/seagullRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const sequelize = require("./data/db");
 const dummyData = require("./data/dummyData");
+const Seagull = require("./models/seagullModel");
+const Expertise = require("./models/expertiseModel");
+
+Expertise.hasMany(Seagull, {
+  foreignKey: { name: "expertiseId", allowNull: true, defaultValue: 1 },
+  onDelete: "RESTRICT",
+  onUpdate: "RESTRICT",
+});
+Seagull.belongsTo(Expertise);
 
 (async () => {
-  await sequelize.sync({ alter: true });
-  await dummyData();
+  try {
+    await sequelize.sync({ force: true });
+  } catch (error) {
+    console.log(error);
+  }
+
+  try {
+    await dummyData();
+  } catch (error) {
+    console.log(error);
+  }
 })();
 
 app.use(express.static("public"));

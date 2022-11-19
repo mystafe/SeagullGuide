@@ -1,21 +1,28 @@
 const Expertise = require("../models/expertiseModel");
 
-module.exports.ExpertiseDelete = async function (req, res) {
+exports.ExpertiseDelete = async function (req, res) {
   const expertiseId = req.params.expertiseId;
   const expertise = await Expertise.findByPk(expertiseId);
-  await Expertise.destroy({ where: { id: expertiseId } });
+  try {
+    await Expertise.destroy({ where: { id: expertiseId } });
+    return res.redirect(
+      `/admin/expertises?action=delete&expertiseName=${expertise.expertiseName}`
+    );
+  } catch (er) {
+    console.log(er);
+  }
   return res.redirect(
-    `/admin/expertises?action=delete&expertiseName=${expertise.expertiseName}`
+    `/admin/expertises?action=is not able to delete&expertiseName=${expertise.expertiseName}`
   );
 };
-module.exports.GetDeletedExpertise = async function (req, res) {
+exports.GetDeletedExpertise = async function (req, res) {
   const expertiseId = req.params.expertiseId;
   const expertise = await Expertise.findByPk(expertiseId);
   return res.render("adminViews/adminExpertiseDelete", {
     expertise: expertise,
   });
 };
-module.exports.GetExpertiseAdmin = async function (req, res) {
+exports.GetExpertiseAdmin = async function (req, res) {
   const expertiseId = req.params.expertiseId;
   try {
     const expertise = await Expertise.findByPk(expertiseId);
@@ -32,18 +39,27 @@ module.exports.GetExpertiseAdmin = async function (req, res) {
     console.log(er);
   }
 };
-module.exports.UpdateExpertise = async function (req, res) {
+exports.UpdateExpertise = async function (req, res) {
   //const seagullId = req.params.seagullId;
-  const expertiseId = req.params.expertiseId;
-  const name = req.body.name;
+  const expertiseId = req.body.id;
+  const expertiseName = req.body.expertiseName;
+  const expertise = await Expertise.findByPk(expertiseId);
+  let iconUrl = expertise.iconUrl;
+  try {
+    iconUrl = req.file.filename;
+  } catch (er) {
+    console.log(er);
+  }
   await Expertise.update(
-    { expertiseName: name },
+    { expertiseName, iconUrl },
     { where: { id: expertiseId } }
   );
 
-  return res.redirect(`/admin/expertises?action=update&expertiseName=${name}`);
+  return res.redirect(
+    `/admin/expertises?action=update&expertiseName=${expertiseName}`
+  );
 };
-module.exports.GetExpertisesAdmin = async (req, res) => {
+exports.GetExpertisesAdmin = async (req, res) => {
   const expertises = await Expertise.findAll();
   res.render("adminViews/adminExpertises", {
     expertises: expertises,
@@ -51,9 +67,25 @@ module.exports.GetExpertisesAdmin = async (req, res) => {
     action: req.query.action,
   });
 };
-module.exports.createExpertise = async (req, res) => {
+exports.createExpertise = async (req, res) => {
   const expertiseName = req.body.name;
-  await Expertise.create({ expertiseName: expertiseName });
+  let iconUrl = "";
+  try {
+    if (req.file.filename) {
+      iconUrl = req.file.filename;
+      console.log(iconUrl);
+    }
+  } catch (er) {
+    console.log(er);
+  }
+  try {
+    await Expertise.create({
+      expertiseName,
+      iconUrl,
+    });
+  } catch (er) {
+    console.log(er);
+  }
   return res.redirect(
     `/admin/expertises?action=create&expertiseName=${expertiseName}`
   );

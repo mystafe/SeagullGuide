@@ -1,6 +1,6 @@
 const Seagull = require("../models/seagullModel");
 const Expertise = require("../models/expertiseModel");
-module.exports.CreateSeagull = async (req, res) => {
+exports.CreateSeagull = async (req, res) => {
   const seagullName = req.body.seagullName;
   const isAlive = req.body.isAlive == "" ? 1 : 0;
   const isFavorite = req.body.isFavorite == "" ? 1 : 0;
@@ -22,15 +22,11 @@ module.exports.CreateSeagull = async (req, res) => {
     `/admin/seagulls?action=create&seagullName=${seagullName}`
   );
 };
-module.exports.UpdateSeagull = async (req, res) => {
+exports.UpdateSeagull = async (req, res) => {
   const seagullId = req.params.seagullId;
   const seagullName = req.body.seagullName;
   const isAlive = req.body.isAlive == "" ? true : false;
   const expertiseId = req.body.expertiseId;
-
-  console.log("_____________");
-  console.log(expertiseId);
-  console.log(req.body.expertiseId);
   const isFavorite = req.body.isFavorite == "" ? true : false;
   const seagull = Seagull.findByPk(seagullId);
   let image = seagull.imageUrl;
@@ -56,8 +52,9 @@ module.exports.UpdateSeagull = async (req, res) => {
     `/admin/seagulls?action=update&seagullName=${seagullName}`
   );
 };
-module.exports.GetSeagullsAdmin = async (req, res) => {
+exports.GetSeagullsAdmin = async (req, res) => {
   const seagulls = await Seagull.findAll();
+  // const expertises = await seagulls.getExpertises();
   const expertises = await Expertise.findAll();
   res.render("adminViews/adminSeagulls", {
     seagulls,
@@ -66,12 +63,16 @@ module.exports.GetSeagullsAdmin = async (req, res) => {
     action: req.query.action,
   });
 };
-module.exports.GetSeagullsByExpertise = async (req, res) => {
+exports.GetSeagullsByExpertise = async (req, res) => {
   const expertiseId = req.params.expertiseId;
-  const seagulls = await Seagull.findAll({
-    where: { expertiseId },
-  });
   const expertises = await Expertise.findAll();
+  const expertise = await Expertise.findByPk(expertiseId);
+  const seagulls = await expertise.getSeagulls({ where: { expertiseId } });
+
+  //const seagulls = await Seagull.findAll({
+  //where: { expertiseId },
+  //});
+
   res.render("seagullViews/seagulls", {
     seagulls,
     expertises,
@@ -80,14 +81,14 @@ module.exports.GetSeagullsByExpertise = async (req, res) => {
     action: req.query.action,
   });
 };
-module.exports.GetDeletedSeagull = async (req, res) => {
+exports.GetDeletedSeagull = async (req, res) => {
   const seagullId = req.params.seagullId;
   const seagull = await Seagull.findByPk(seagullId);
   res.render("adminViews/adminSeagullDelete", {
     seagull: seagull,
   });
 };
-module.exports.DeleteSeagull = async function (req, res) {
+exports.DeleteSeagull = async function (req, res) {
   const seagullId = req.params.seagullId;
   const seagull = await Seagull.findByPk(seagullId);
   await Seagull.destroy({
@@ -99,7 +100,7 @@ module.exports.DeleteSeagull = async function (req, res) {
     `/admin/seagulls?action=delete&seagullName=${seagull.seagullName}`
   );
 };
-module.exports.GetSeagullAdmin = async (req, res) => {
+exports.GetSeagullAdmin = async (req, res) => {
   const seagullId = req.params.seagullId;
   const seagull = await Seagull.findByPk(seagullId);
   const seagulls = await Seagull.findAll();
@@ -113,16 +114,16 @@ module.exports.GetSeagullAdmin = async (req, res) => {
     action: req.query.action,
   });
 };
-module.exports.GetAdminPage = async (req, res) => {
+exports.GetAdminPage = async (req, res) => {
   res.render("main");
 };
-module.exports.GetSeagull = async (req, res) => {
+exports.GetSeagull = async (req, res) => {
   const seagullId = req.params.seagullId;
   const seagull = await Seagull.findByPk(seagullId);
   const expertises = await Expertise.findAll();
   res.render("seagullViews/seagullDetail", { seagull, expertises });
 };
-module.exports.GetSeagulls = async (req, res) => {
+exports.GetSeagulls = async (req, res) => {
   let seagulls;
   if (req.url == "/favorites") {
     seagulls = await Seagull.findAll({ where: { isFavorite: true } });
@@ -142,6 +143,6 @@ module.exports.GetSeagulls = async (req, res) => {
     expertiseId: 0,
   });
 };
-module.exports.GetMainPage = async (req, res) => {
+exports.GetMainPage = async (req, res) => {
   res.render("main");
 };

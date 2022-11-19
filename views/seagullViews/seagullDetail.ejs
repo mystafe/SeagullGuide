@@ -1,23 +1,53 @@
 <%- include ("../partials/head",{title:"Seagull Detail"}) %> 
   <body class="mx-3">
+      <%- include ("../partials/nav") %>
+
+    <div class="container">
+      <h1 class="mb-3">Seagull details</h1><br>
+
+      <div class="row">
+        <div class="col-md-3">
+          <p><strong>Seagull Id: </strong><%=seagull.id %></p>
+          <p><strong>Seagull Name: </strong><%= seagull.seagullName %></p>
+          <p> <div style="display: inline-block;max-width: 90px;">
+                <strong>Is alive? </strong>
+                <% if (seagull.isAlive) { %>
+                  <%- include("../partials/lifeIcon")%>
+                  <%} else { %>                      
+                  <% } %>
+          
+              </div>
+            </p>
+            <p>
+              <div style="display: inline-block;max-width: 90px;">
+                <strong>Is favorite? </strong>
+                <% if (seagull.isFavorite) { %>
+                  <%- include("../partials/favoriteIcon")%>
+                  <%} else { %>                      
+                  <% } %>
+                </div>
+              </p>
+            
+          <p><strong>Expertise: </strong>
+            <% expertises.forEach(expertise => { %>
+              <%= expertise.id==seagull.expertiseId?expertise.expertiseName :"" %>      
+            <% }) %>
+          </p>
+
+
+        </div>
+        <div class="col-md-8">
+          <p>
+          <a href="/seagulls">
+          <%- include("../partials/image",{imageUrl:seagull.imageUrl,width:500})  %> 
+          </a>
+        </p>
+        To return back click ⬆️
+        </div>
+
+      </div>
+    </div>
     
-    <%- include ("../partials/nav") %>
-
-    <h1 class="mb-3">Seagull detail page</h1>
-
-
-    <p><strong>Seagull Id: </strong><%=seagull.id %> <br /></p>
-
-    <p><strong>Seagull Name: </strong><%= seagull.seagullName %></p>
-
-    To return back click ⏬
-    <hr>
-    <p>
-    <a href="/seagulls">
-      <%- include("../partials/image",{imageUrl:seagull.imageUrl,width:300})  %> 
-    </a>
-  </p>
-    <%- include ("../partials/footer") %>
-
   </body>
+  <%- include ("../partials/footer") %>
 </html>

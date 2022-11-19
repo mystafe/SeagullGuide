@@ -35,6 +35,13 @@ router.post(
   seagullController.CreateSeagull
 );
 
+//createExpertise
+router.post(
+  "/admin/expertises",
+  imageupload.upload.single("image"),
+  expertiseController.createExpertise
+);
+
 //ExpertiseDelete
 router.post(
   "/admin/expertise/delete/:expertiseId",
@@ -53,10 +60,9 @@ router.get(
 //UpdateExpertise
 router.post(
   "/admin/expertise/:expertiseId",
+  imageupload.upload.single("iconUrl"),
   expertiseController.UpdateExpertise
 );
-//createExpertise
-router.post("/admin/expertises", expertiseController.createExpertise);
 
 //GetExpertisesAdmin
 router.get("/admin/expertises", expertiseController.GetExpertisesAdmin);

@@ -17,6 +17,7 @@
             <thead>
               <tr>
                 <th>Name</th>
+                <th style="width: 200px;">Icon</th>
 
                 <th style="width: 150px;">Edit</th>
 
@@ -28,6 +29,10 @@
                   
                 <tr>
                   <td><%=expertise.expertiseName%></td>
+                  <td>
+                    <img src="/images/<%=expertise.iconUrl%>" width="100" alt="">
+
+                  </td>
                   <td>
                     <button class="btn btn small btn-primary"> <a href="/admin/expertise/<%=expertise.id%> ">📝</a></button>
                     <button class="btn btn small btn-danger"> <a href="/admin/expertise/delete/<%=expertise.id%> ">🗑️</a></button>     

@@ -2,7 +2,7 @@
   <body class="mx-3">
     <%- include ("../partials/nav") %>
 
-    <h1 class="mb-3">Seagulls edit page</h1>
+    <h1 class="mb-3">Seagulls edit page</h1><hr>
 
     <div class="container mt-3">
 
@@ -15,10 +15,9 @@
           <table class="table table-bordered table-striped">
             <thead>
               <tr>
-                <th style="width: 50px;">id</th>
                 <th> Name</th>
                 <th style="width: 200px;">Expertise</th>
-                <th style="width: 150px;">ImageUrl</th>
+                <th style="width: 150px;">Image</th>
                 <th style="width: 100px;">Is favorite?</th>
                 <th style="width: 100px;">Is alive?</th>
                 <th style="width: 140px;">Edit</th>
@@ -29,7 +28,6 @@
 
                 <% seagulls.forEach(seagull => { %>
                 <tr>
-                  <td><%=seagull.id%></td>
                   <td><%=seagull.seagullName%></td>
                   <td>
                   <% expertises.forEach(ex => { %>
@@ -37,21 +35,22 @@
                   <% }) %>
                   </td>
                   <td> 
+                    <a href="/seagull/<%= seagull.id %> ">
                     <%- include("../partials/image",{imageUrl:seagull.imageUrl,width:90})  %> 
-
-                    </td>
-
-
-                  <td>
-                  <% if (seagull.isAlive) { %>
-                    <%- include("../partials/favoriteIcon")%>
-                    <%} else { %>                      
-                    <% } %>
+                  </a>  
                   </td>
 
                   <td>
                     <% if (seagull.isFavorite) { %>
                       <%- include("../partials/lifeIcon")%>
+                      <%} else { %>                      
+                      <% } %>
+                  </td>
+
+                  
+                  <td>
+                    <% if (seagull.isAlive) { %>
+                      <%- include("../partials/favoriteIcon")%>
                       <%} else { %>                      
                       <% } %>
                     </td>
@@ -68,7 +67,7 @@
         </div>
       </div>
     </div>
-
+    <hr>
     <%- include ("adminCreateSeagull") %>
 
     <%- include ("../partials/footer") %>
