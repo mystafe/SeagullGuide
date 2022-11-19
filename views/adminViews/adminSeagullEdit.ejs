@@ -13,8 +13,8 @@
             <div class="col-md-12 mt-3">               
               <form method="post" enctype="multipart/form-data">
 
-                <input type="hidden" name="seagullId" value="<%=seagull.seagullId%>">
-                <input type="hidden" name="image" value="<%=seagull.imageUrl%>">
+                <input type="hidden" name="seagullId" value="<%=seagull.id%>">
+                <input type="hidden" name="firstImage" value="<%=seagull.imageUrl%>">
 
 
                 <div class="row mb-3">
@@ -27,17 +27,18 @@
                   <div class="row mb-3">
                     <label for="image" class="col-sm-2 col-form-label">Image: </label>
                     <div class="col-sm-8">
-                      <img src="/images/<%=seagull.imageUrl%> "  alt="" width="100;">
+                      <%- include("../partials/image",{imageUrl:seagull.imageUrl,width:100})  %> 
+
                       <input class="form-control" type="file" id="image" name="image">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="expertise" class="col-sm-2 col-form-label">Expertise: </label>
+                    <label for="expertiseId" class="col-sm-2 col-form-label">Expertise: </label>
                     <div class="col-sm-8">
-                      <select name="expertise" id="expertise" class="form-select">
+                      <select name="expertiseId" id="expertiseId" class="form-select">
                           <% expertises.forEach(ex => { %>
-                            <option <%=ex.expertiseId==seagull.expertiseId?"selected":""%> value= "<%=ex.expertiseId%>"><%= ex.expertiseName%></option>
+                            <option <%=ex.id==seagull.expertiseId?"selected":""%> value= "<%=ex.id%>"><%= ex.expertiseName%></option>
                           
                           <% }) %>
 

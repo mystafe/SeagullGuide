@@ -6,20 +6,17 @@
     <h1 class="mb-3">Seagull detail page</h1>
 
 
-    <p><strong>Seagull Id: </strong><%=seagull.seagullId %> <br /></p>
+    <p><strong>Seagull Id: </strong><%=seagull.id %> <br /></p>
 
     <p><strong>Seagull Name: </strong><%= seagull.seagullName %></p>
 
-    To return back click
-
+    To return back click ⏬
+    <hr>
+    <p>
     <a href="/seagulls">
-      <img
-        class="img-fluid rounded"
-        src="<%= seagull.imageUrl%>"
-        alt="seagull"
-       width="120"
-      />
+      <%- include("../partials/image",{imageUrl:seagull.imageUrl,width:300})  %> 
     </a>
+  </p>
     <%- include ("../partials/footer") %>
 
   </body>

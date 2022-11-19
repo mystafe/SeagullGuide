@@ -1,28 +1,18 @@
 <div class="card mb-3">
   <div class="row">
     <div class="col-3 mb-3">
-      <img
-        src="<%=seagull.imageUrl%>"
-        class="img-fluid rounded"
-        style="object-fit: cover; max-height: 250px"
-        alt=""
-      />
+      <%- include("../partials/image",{imageUrl:seagull.imageUrl,width:200}) %>
     </div>
 
     <div class="col mb-9">
       <div class="card-body">
-        <a
-          style="text-decoration: none"
-          href="/seagull/<%=seagull.seagullId %>"
-        >
+        <a style="text-decoration: none" href="/seagull/<%=seagull.id %>">
           <h3 class="card-title"><%= seagull.seagullName %></h3>
         </a>
         <p class="card-text">
           <% expertises.forEach(expertise => { %>
           <strong>
-            <%=
-            expertise.expertiseId==seagull.expertiseId?expertise.expertiseName:""
-            %>
+            <%= expertise.id==seagull.expertiseId?expertise.expertiseName:"" %>
           </strong>
           <% }) %>
         </p>

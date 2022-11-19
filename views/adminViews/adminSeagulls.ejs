@@ -11,17 +11,17 @@
       <% } %>
 
       <div class="row">
-        <div class="col-md-12 mt-3">
+        <div class="col-md-10 mt-3">
           <table class="table table-bordered table-striped">
             <thead>
               <tr>
                 <th style="width: 50px;">id</th>
                 <th> Name</th>
-                <th>Expertise</th>
-                <th style="width: 200px;">ImageUrl</th>
-                <th>isAlive</th>
-                <th>isFavorite</th>
-                <th style="width: 120px;">Edit</th>
+                <th style="width: 200px;">Expertise</th>
+                <th style="width: 150px;">ImageUrl</th>
+                <th style="width: 100px;">Is favorite?</th>
+                <th style="width: 100px;">Is alive?</th>
+                <th style="width: 140px;">Edit</th>
 
               </tr>
             </thead>
@@ -29,15 +29,36 @@
 
                 <% seagulls.forEach(seagull => { %>
                 <tr>
-                  <td><%=seagull.seagullId%></td>
+                  <td><%=seagull.id%></td>
                   <td><%=seagull.seagullName%></td>
-                  <td><%=seagull.expertiseId%></td>
-                  <td> <img class="img-fluid" src= <%= seagull.imageUrl%>  alt="seagull"> </td>
-                  <td><%=seagull.isAlive%></td>
-                  <td><%=seagull.isFavorite%></td>
                   <td>
-                    <button class="btn btn small btn-primary"> <a href="/admin/seagull/<%=seagull.seagullId%> ">📝</a></button>
-                    <button class="btn btn small btn-danger"> <a href="/admin/seagull/delete/<%=seagull.seagullId%> ">🗑️</a></button>     
+                  <% expertises.forEach(ex => { %>
+                    <%=seagull.expertiseId==ex.id?ex.expertiseName:''%>                
+                  <% }) %>
+                  </td>
+                  <td> 
+                    <%- include("../partials/image",{imageUrl:seagull.imageUrl,width:90})  %> 
+
+                    </td>
+
+
+                  <td>
+                  <% if (seagull.isAlive) { %>
+                    <%- include("../partials/favoriteIcon")%>
+                    <%} else { %>                      
+                    <% } %>
+                  </td>
+
+                  <td>
+                    <% if (seagull.isFavorite) { %>
+                      <%- include("../partials/lifeIcon")%>
+                      <%} else { %>                      
+                      <% } %>
+                    </td>
+                  
+                  <td>
+                    <button class="btn btn small btn-primary"> <a href="/admin/seagull/<%=seagull.id%> ">📝</a></button>
+                    <button class="btn btn small btn-danger"> <a href="/admin/seagull/delete/<%=seagull.id%> ">🗑️</a></button>     
                 </td>
                   
                 <% }) %>

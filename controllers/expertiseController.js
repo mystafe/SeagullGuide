@@ -1,14 +1,9 @@
-const express = require("express");
-
-const Seagull = require("../models/seagullModel");
 const Expertise = require("../models/expertiseModel");
 
 module.exports.ExpertiseDelete = async function (req, res) {
   const expertiseId = req.params.expertiseId;
-  const index = 0;
-  const page = 0;
   const expertise = await Expertise.findByPk(expertiseId);
-  await Expertise.destroy({ where: { expertiseId: expertiseId } });
+  await Expertise.destroy({ where: { id: expertiseId } });
   return res.redirect(
     `/admin/expertises?action=delete&expertiseName=${expertise.expertiseName}`
   );
@@ -43,7 +38,7 @@ module.exports.UpdateExpertise = async function (req, res) {
   const name = req.body.name;
   await Expertise.update(
     { expertiseName: name },
-    { where: { expertiseId: expertiseId } }
+    { where: { id: expertiseId } }
   );
 
   return res.redirect(`/admin/expertises?action=update&expertiseName=${name}`);
@@ -56,7 +51,6 @@ module.exports.GetExpertisesAdmin = async (req, res) => {
     action: req.query.action,
   });
 };
-
 module.exports.createExpertise = async (req, res) => {
   const expertiseName = req.body.name;
   await Expertise.create({ expertiseName: expertiseName });

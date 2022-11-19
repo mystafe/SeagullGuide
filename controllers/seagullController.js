@@ -1,24 +1,20 @@
-const express = require("express");
-
 const Seagull = require("../models/seagullModel");
 const Expertise = require("../models/expertiseModel");
-
 module.exports.CreateSeagull = async (req, res) => {
-  //    console.log(req.body.imageUrl);
   const seagullName = req.body.seagullName;
-  const imageUrl = req.file.filename;
   const isAlive = req.body.isAlive == "" ? 1 : 0;
   const isFavorite = req.body.isFavorite == "" ? 1 : 0;
   let image = "";
-  console.log(image);
-  console.log(req.file.filename);
-
-  if (req.file.filename) {
-    image = req.file.filename;
+  try {
+    if (req.file.filename) {
+      image = req.file.filename;
+    }
+  } catch (er) {
+    console.log(er);
   }
   await Seagull.create({
     seagullName: seagullName,
-    imageUrl: imageUrl,
+    imageUrl: image,
     isAlive: isAlive,
     isFavorite: isFavorite,
   });
@@ -26,21 +22,33 @@ module.exports.CreateSeagull = async (req, res) => {
     `/admin/seagulls?action=create&seagullName=${seagullName}`
   );
 };
-
 module.exports.UpdateSeagull = async (req, res) => {
   const seagullId = req.params.seagullId;
   const seagullName = req.body.seagullName;
-  const isAlive = req.body.isAlive == "" ? 1 : 0;
-  const isFavorite = req.body.isFavorite == "" ? 1 : 0;
+  const isAlive = req.body.isAlive == "" ? true : false;
+  const expertiseId = req.body.expertiseId;
 
+  console.log("_____________");
+  console.log(expertiseId);
+  console.log(req.body.expertiseId);
+  const isFavorite = req.body.isFavorite == "" ? true : false;
+  const seagull = Seagull.findByPk(seagullId);
+  let image = seagull.imageUrl;
+  try {
+    image = req.file.filename;
+  } catch (er) {
+    console.log(er);
+  }
   await Seagull.update(
     {
-      seagullName: seagullName,
-      isAlive: isAlive,
-      isFavorite: isFavorite,
+      seagullName,
+      isAlive,
+      isFavorite,
+      expertiseId,
+      imageUrl: image,
     },
     {
-      where: { seagullId: seagullId },
+      where: { id: seagullId },
     }
   );
 
@@ -48,16 +56,30 @@ module.exports.UpdateSeagull = async (req, res) => {
     `/admin/seagulls?action=update&seagullName=${seagullName}`
   );
 };
-
 module.exports.GetSeagullsAdmin = async (req, res) => {
   const seagulls = await Seagull.findAll();
+  const expertises = await Expertise.findAll();
   res.render("adminViews/adminSeagulls", {
-    seagulls: seagulls,
+    seagulls,
+    expertises,
     seagullName: req.query.seagullName,
     action: req.query.action,
   });
 };
-
+module.exports.GetSeagullsByExpertise = async (req, res) => {
+  const expertiseId = req.params.expertiseId;
+  const seagulls = await Seagull.findAll({
+    where: { expertiseId },
+  });
+  const expertises = await Expertise.findAll();
+  res.render("seagullViews/seagulls", {
+    seagulls,
+    expertises,
+    expertiseId,
+    seagullName: req.query.seagullName,
+    action: req.query.action,
+  });
+};
 module.exports.GetDeletedSeagull = async (req, res) => {
   const seagullId = req.params.seagullId;
   const seagull = await Seagull.findByPk(seagullId);
@@ -65,24 +87,20 @@ module.exports.GetDeletedSeagull = async (req, res) => {
     seagull: seagull,
   });
 };
-
 module.exports.DeleteSeagull = async function (req, res) {
   const seagullId = req.params.seagullId;
-  const index = 0;
-  const page = 0;
+  const seagull = await Seagull.findByPk(seagullId);
   await Seagull.destroy({
     where: {
-      seagullId: seagullId,
+      id: seagullId,
     },
   });
   res.redirect(
-    `/admin/seagulls?action=delete&seagullName=${seagulls[0].seagullName}`
+    `/admin/seagulls?action=delete&seagullName=${seagull.seagullName}`
   );
 };
-
 module.exports.GetSeagullAdmin = async (req, res) => {
   const seagullId = req.params.seagullId;
-
   const seagull = await Seagull.findByPk(seagullId);
   const seagulls = await Seagull.findAll();
   const expertises = await Expertise.findAll();
@@ -95,30 +113,30 @@ module.exports.GetSeagullAdmin = async (req, res) => {
     action: req.query.action,
   });
 };
-
 module.exports.GetAdminPage = async (req, res) => {
   res.render("main");
 };
-
 module.exports.GetSeagull = async (req, res) => {
   const seagullId = req.params.seagullId;
   const seagull = await Seagull.findByPk(seagullId);
   const expertises = await Expertise.findAll();
   res.render("seagullViews/seagullDetail", { seagull, expertises });
 };
-
 module.exports.GetSeagulls = async (req, res) => {
-  console.log("-------------------");
-  console.log(req.url);
   let seagulls;
   if (req.url == "/favorites") {
     seagulls = await Seagull.findAll({ where: { isFavorite: true } });
+    const expertises = await Expertise.findAll();
+    return res.render("seagullViews/favoriteSeagulls", {
+      seagulls,
+      expertises,
+      expertiseId: 0,
+    });
   } else {
     seagulls = await Seagull.findAll();
   }
   const expertises = await Expertise.findAll();
-
-  res.render("seagullViews/favoriteSeagulls", {
+  res.render("seagullViews/seagulls", {
     seagulls,
     expertises,
     expertiseId: 0,

@@ -6,8 +6,8 @@
   </a>
   <% expertises.forEach(ex => { %>
   <a
-    href="/expertise/<%= ex.expertiseId%>"
-    class="list-group-item <%= ex.expertiseId==expertiseId ?'active' :''%>"
+    href="/expertise/<%= ex.id%>"
+    class="list-group-item <%= ex.id==expertiseId ?'active' :''%>"
     ><%= ex.expertiseName %>
   </a>
 
