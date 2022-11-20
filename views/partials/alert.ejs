@@ -1,5 +1,27 @@
-<div class="alert alert<%=action=="create"?'-success':'' %> alert<%=action=="delete"?'-danger':''%> alert<%=action=="update"?'-primary':'' %> ">
-  <p class="mb-3">
-     <b><%=name%></b> is <b><%=action%>d</b>.
-  </p>
+<% if (action=="create") { %>
+
+<div class="alert alert-success">
+  <p class="mb-3"><b><%=name%></b> is <b><%=action%>d</b>.</p>
 </div>
+<% } %> <% if (action=="delete") { %>
+
+<div class="alert alert-danger">
+  <p class="mb-3"><b><%=name%></b> is <b><%=action%>d</b>.</p>
+</div>
+<% } %> <% if (action=="update") { %>
+
+<div class="alert alert-primary">
+  <p class="mb-3"><b><%=name%></b> is <b><%=action%>d</b>.</p>
+</div>
+
+<% } %> <% if (action=="like") { %>
+
+<div class="alert alert-success">
+  <p class="mb-3"><b><%=name%></b> is <b><%=action%>d</b>.</p>
+</div>
+<% } %> <% if (action=="unlike") { %>
+
+<div class="alert alert-danger">
+  <p class="mb-3"><b><%=name%></b> is <b><%=action%>d</b>.</p>
+</div>
+<% } %>

@@ -3,7 +3,7 @@
 
     <%- include ("../partials/nav") %>
 
-    <h1 class="mb-3">Expertises edit page</h1>
+    <h1 class="mb-3">Expertises edit page</h1><hr>
 
     <div class="container mt-3">
 
@@ -30,6 +30,7 @@
                 <tr>
                   <td><%=expertise.expertiseName%></td>
                   <td>
+                    
                     <img src="/images/<%=expertise.iconUrl%>" width="100" alt="">
 
                   </td>
@@ -46,7 +47,7 @@
         </div>
       </div>
     </div>
-
+  <hr>
     <%- include ("adminCreateExpertise") %>
     <%- include ("../partials/footer") %>
   </body>

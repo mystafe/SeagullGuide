@@ -7,12 +7,14 @@ const dummyData = require("./data/dummyData");
 const Seagull = require("./models/seagullModel");
 const Expertise = require("./models/expertiseModel");
 
-Expertise.hasMany(Seagull, {
-  foreignKey: { name: "expertiseId", allowNull: true, defaultValue: 1 },
-  onDelete: "RESTRICT",
-  onUpdate: "RESTRICT",
-});
-Seagull.belongsTo(Expertise);
+// Expertise.hasMany(Seagull, {
+//   foreignKey: { name: "expertiseId", allowNull: true, defaultValue: 1 },
+//   onDelete: "RESTRICT",
+//   onUpdate: "RESTRICT",
+// });
+
+Seagull.belongsToMany(Expertise, { through: "seagullExpertises" });
+Expertise.belongsToMany(Seagull, { through: "seagullExpertises" });
 
 (async () => {
   try {

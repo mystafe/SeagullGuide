@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-3 mb-3">
 
-      <a href="/seagull/<%=seagull.id %>">
+      <a href="/seagull/<%=seagull.urlSlug%>">
         <%- include("../partials/image",{imageUrl:seagull.imageUrl,width:200})%> 
         </a>
       </p>
@@ -13,7 +13,7 @@
 
     <div class="col mb-9">
       <div class="card-body">
-        <a style="text-decoration: none" href="/seagull/<%=seagull.id %>">
+        <a style="text-decoration: none" href="/seagull/<%=seagull.urlSlug%>">
           <h3 class="card-title"><%= seagull.seagullName %></h3>
         </a>
         <p class="card-text">

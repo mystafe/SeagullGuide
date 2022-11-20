@@ -6,7 +6,7 @@ const seagullController = require("../controllers/seagullController");
 //GetFavoriteSeagulls
 router.get("/favorites", seagullController.GetSeagulls);
 //GetSeagull
-router.get("/seagull/:seagullId", seagullController.GetSeagull);
+router.get("/seagull/:slug", seagullController.GetSeagull);
 //GetSeagulls
 router.get("/seagulls", seagullController.GetSeagulls);
 //GetSeagullsByExpertise

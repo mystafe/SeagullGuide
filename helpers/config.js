@@ -7,4 +7,5 @@ const config = {
   },
 };
 
+pageLimit = 3;
 module.exports = config;

@@ -1,6 +1,17 @@
+<% if (imageUrl=='') { %>
 <img
   class="img-fluid"
-  src="<% if (String(imageUrl).startsWith('http')) { %><%=imageUrl%><%} else { %>/images/<%=imageUrl%><%}%>"
+  src="/images/nopicture.png"
   alt="seagull"
   width="<%=width%>;"
 />
+<%} else if (String(imageUrl).startsWith('http')) { %>
+<img class="img-fluid" src="<%=imageUrl%>" alt="seagull" width="<%=width%>;" />
+<% } else { %>
+<img
+  class="img-fluid"
+  src="/images/<%=imageUrl%>"
+  alt="seagull"
+  width="<%=width%>;"
+/>
+<% } %>

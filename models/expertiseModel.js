@@ -8,6 +8,9 @@ const Expertise = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    urlSlug: {
+      type: DataTypes.STRING,
+    },
     iconUrl: {
       type: DataTypes.STRING,
       allowNull: true,

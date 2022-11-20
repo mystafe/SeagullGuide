@@ -16,13 +16,19 @@
                 <input type="hidden" name="seagullId" value="<%=seagull.id%>">
                 <input type="hidden" name="firstImage" value="<%=seagull.imageUrl%>">
 
-
                 <div class="row mb-3">
                   <label for="seagullName" class="col-sm-2 col-form-label">Name: </label>
                   <div class="col-sm-8">
                     <input class="form-control" type="text" id="seagullName" name="seagullName" value="<%=seagull.seagullName%>">
                     </div>
                   </div>
+
+                  <div class="row mb-3">
+                    <label for="urlSlug" class="col-sm-2 col-form-label">Slug: </label>
+                    <div class="col-sm-8">
+                      <input class="form-control" type="text" id="urlSlug" name="urlSlug" value="<%=seagull.urlSlug%>">
+                      </div>
+                    </div>
                   
                   <div class="row mb-3">
                     <label for="image" class="col-sm-2 col-form-label">Image: </label>
@@ -32,18 +38,27 @@
                     </div>
                   </div>
 
-                  <div class="row mb-3">
-                    <label for="expertiseId" class="col-sm-2 col-form-label">Expertise: </label>
-                    <div class="col-sm-8">
-                      <select name="expertiseId" id="expertiseId" class="form-select">
-                          <% expertises.forEach(ex => { %>
-                            <option <%=ex.id==seagull.expertiseId?"selected":""%> value= "<%=ex.id%>"><%= ex.expertiseName%></option>
-                          
-                          <% }) %>
 
-                      </select>
+                  <div class="row mb-3">
+                    <label for="expertiseIds" class="col-sm-2 col-form-label">Expertise: </label>
+                    <div class="col-sm-8">
+                      <% expertises.forEach(ex => { %>    
+                        <div class="form-check">
+                         <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="expertise_<%=ex.id %>"
+                          name="expertiseIds[]"
+                          value="<%=ex.id%> "
+                          <%=seagull.expertises.some(exp=>exp.id==ex.id)?"checked":""%> 
+                          />
+                          <label class="form-check-label" for="expertise_<%=ex.id %>"
+                          ><%=ex.expertiseName %>
+                        </label>
+                      </div>
+                      <% }) %>
                     </div>
-                  </div>
+                 </div>
 
                   <div class="row mb-3">
                     <div class="col-sm-8 offset-sm-2">

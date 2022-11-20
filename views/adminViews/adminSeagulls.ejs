@@ -11,12 +11,12 @@
       <% } %>
 
       <div class="row">
-        <div class="col-md-10 mt-3">
+        <div class="col-md-12  mt-3">
           <table class="table table-bordered table-striped">
             <thead>
               <tr>
-                <th> Name</th>
-                <th style="width: 200px;">Expertise</th>
+                <th style="width: 250px;"> Name</th>
+                <th> Expertise</th>
                 <th style="width: 150px;">Image</th>
                 <th style="width: 100px;">Is favorite?</th>
                 <th style="width: 100px;">Is alive?</th>
@@ -25,50 +25,66 @@
               </tr>
             </thead>
               <tbody>
-
                 <% seagulls.forEach(seagull => { %>
-                <tr>
-                  <td><%=seagull.seagullName%></td>
-                  <td>
-                  <% expertises.forEach(ex => { %>
-                    <%=seagull.expertiseId==ex.id?ex.expertiseName:''%>                
-                  <% }) %>
-                  </td>
-                  <td> 
-                    <a href="/seagull/<%= seagull.id %> ">
-                    <%- include("../partials/image",{imageUrl:seagull.imageUrl,width:90})  %> 
-                  </a>  
-                  </td>
-
-                  <td>
-                    <% if (seagull.isFavorite) { %>
-                      <%- include("../partials/lifeIcon")%>
-                      <%} else { %>                      
-                      <% } %>
-                  </td>
-
-                  
-                  <td>
-                    <% if (seagull.isAlive) { %>
-                      <%- include("../partials/favoriteIcon")%>
-                      <%} else { %>                      
-                      <% } %>
+                  <tr>
+                    <td><%=seagull.seagullName%></td>
+                    <td>                  
+                      <% seagull.expertises.forEach(ex => { %>
+                          <% expertises.forEach(expertise => { %>
+                            <% if (expertise.id==ex.id) { %>
+                              <img src="/images/<%=expertise.iconUrl%>" width="80" alt="<%=expertise.expertiseName %>">  
+                            <% } %>                       
+                          <% }) %>                                                 
+                      <% }) %>
                     </td>
+                    <td> 
+                      <a href="/seagull/<%= seagull.urlSlug%>">
+                      <%- include("../partials/image",{imageUrl:seagull.imageUrl,width:90})  %> 
+                    </a>  
+                    </td>
+                    <td>                  
+                      <form method="post" enctype="multipart/form-data">
+                          <input class="form-control" type="hidden" id="seagullId" name="seagullId" value="<%=seagull.id%>"/>
+                          <input class="form-control" type="hidden" id="seagullName" name="seagullName" value="<%=seagull.seagullName%>"/>
+                          <input class="form-control" type="hidden" id="likeStatus" name="likeStatus" value="1"/>
+                          <input class="form-control" type="hidden" id="isFavorite" name="isFavorite" value=<%= seagull.isFavorite==1?0:1%> />
+                          <div class="row mb-3">
+                              <div class="col-sm-8 offset-sm-2">
+                              <button type="submit" class="btn shadow-none btn-link">                 
+                                    <% if (seagull.isFavorite) { %>
+                                    <%- include("../partials/statusIcon",{iconName:"favorite",iconSize:80})%>
+                                      <%} else { %>   
+                                      <%- include("../partials/statusIcon",{iconName:"unfavorite",iconSize:80})%>
+                                    <%}%>                            
+                              </button>
+                              </div>
+                          </div>
+                        </form>
                   
-                  <td>
-                    <button class="btn btn small btn-primary"> <a href="/admin/seagull/<%=seagull.id%> ">📝</a></button>
-                    <button class="btn btn small btn-danger"> <a href="/admin/seagull/delete/<%=seagull.id%> ">🗑️</a></button>     
-                </td>
-                  
-                <% }) %>
-              </tr>
-              </tbody>
-          </table>
+                    </td>
+                    
+                    <td>
+                      <% if (seagull.isAlive) { %>
+                        <%- include("../partials/statusIcon",{iconName:"alive",iconSize:80})%>
+                        <%} else { %>   
+                          <%- include("../partials/statusIcon",{iconName:"notalive",iconSize:80})%>
+                        <% } %>
+                    </td>
+                    
+                    <td>
+                      <button class="btn btn small btn-primary"> <a href="/admin/seagull/<%=seagull.id%> ">📝</a></button>
+                      <button class="btn btn small btn-danger"> <a href="/admin/seagull/delete/<%=seagull.id%> ">🗑️</a></button>     
+                    </td> 
+                  </tr>          
+                  <% }) %>                  
+               </tbody>
+          </table>         
         </div>
       </div>
+
+      <hr>
+      <%- include ("adminCreateSeagull") %>
     </div>
-    <hr>
-    <%- include ("adminCreateSeagull") %>
 
     <%- include ("../partials/footer") %>
   </body>
