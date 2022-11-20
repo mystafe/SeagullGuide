@@ -12,13 +12,22 @@
 
         <div class="col-md-9">
 
-          <% seagulls.forEach(seagull => { %>
-            <%- include("seagull",{seagull:seagull,expertises:expertises})  %> 
-          <% }) %>
+          <% if (totalSeagulls > 0) { %>
+            <% seagulls.forEach(seagull => { %>
+              <%- include("seagull",{seagull:seagull,expertises:expertises})  %> 
+            <% }) %>
+  
+            <%} else { %>
 
+              <div class="alert alert-warning">
+                <p class="mb-3"><b>No Seagull</b></p>
+              </div>
+              
 
- 
+            <% } %>
+     
           </div>
+          <%- include ("../partials/pagination",{currentPage,totalPages,totalSeagulls,routingPage:"favorites"}) %> 
       </div>                
     </div>
     <%- include ("../partials/footer") %>

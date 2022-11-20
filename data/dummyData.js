@@ -69,10 +69,10 @@ async function Populate() {
     expertises[3].addSeagull(seagulls[1]);
     expertises[3].addSeagull(seagulls[3]);
     expertises[0].addSeagull(seagulls[3]);
+    expertises[2].addSeagull(seagulls[3]);
+    expertises[1].addSeagull(seagulls[2]);
+    expertises[3].addSeagull(seagulls[0]);
     expertises[2].addSeagull(seagulls[4]);
-    expertises[2].addSeagull(seagulls[4]);
-    expertises[4].addSeagull(seagulls[0]);
-    expertises[2].addSeagull(seagulls[0]);
   }
 }
 

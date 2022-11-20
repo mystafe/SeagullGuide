@@ -11,14 +11,22 @@
         </div>
 
         <div class="col-md-9">
+        <% if (seagulls.count==0) { %>
+          No Seagull
+          <% }else %>         
+        <% seagulls.forEach(seagull => { %>
+          <%- include("seagull",{seagull:seagull,expertises:expertises})  %> 
+        <% }) %>
+        
 
-          <% seagulls.forEach(seagull => { %>
-            <%- include("seagull",{seagull:seagull,expertises:expertises})  %> 
-          <% }) %>
+
+   
 
 
  
           </div>
+          <%- include ("../partials/pagination",{currentPage,totalPages,totalSeagulls,routingPage:"seagulls"}) %> 
+
       </div>                
     </div>
     <%- include ("../partials/footer") %>

@@ -1,0 +1,38 @@
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a
+        class="page-link"
+        href="/<%= index>1?`${page}?page=${index-1}`:`${page} `%>"
+        aria-label="Previous"
+      >
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item">
+      <a class="page-link <%=index==1?'active':''%>" href="/<%=page%>?page=1"
+        >1</a
+      >
+    </li>
+    <li class="page-item">
+      <a class="page-link <%=index==2?'active':''%>" href="/<%=page%>?page=2"
+        >2</a
+      >
+    </li>
+    <li class="page-item">
+      <a class="page-link <%=index==3?'active':''%>" href="/<%=page%>?page=3"
+        >3</a
+      >
+    </li>
+
+    <li class="page-item">
+      <a
+        class="page-link"
+        href="/<%=page%>?page=<%=+index+1%>"
+        aria-label="Previous"
+      >
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>

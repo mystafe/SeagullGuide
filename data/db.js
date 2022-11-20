@@ -5,7 +5,12 @@ const sequelize = new Sequelize(
   config.db.database,
   config.db.user,
   config.db.password,
-  { dialect: "mysql", host: config.db.host, define: { timestamps: false } }
+  {
+    dialect: "mysql",
+    host: config.db.host,
+    define: { timestamps: false },
+    logging: false,
+  }
 );
 
 async function connect() {

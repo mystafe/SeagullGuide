@@ -1,38 +1,100 @@
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
+<nav>
+
+<% if (currentPage<2&&totalPages<2) { %>
+    <!--nothing-->
+<% } else if(currentPage<2&&totalPages>1) { %>
+
+  <ul class="pagination justify-content-center">
+    <% for( let page = 1; page <=totalPages; page++ ) { %>
     <li class="page-item">
-      <a
-        class="page-link"
-        href="/<%= index>1?`${page}?page=${index-1}`:`${page} `%>"
-        aria-label="Previous"
-      >
-        <span aria-hidden="true">&laquo;</span>
+      <a class="page-link <%=currentPage==page?"active":""%>"
+         href="?page=<%=page%>"
+        ><%=page%>
       </a>
     </li>
-    <li class="page-item">
-      <a class="page-link <%=index==1?'active':''%>" href="/<%=page%>?page=1"
-        >1</a
-      >
-    </li>
-    <li class="page-item">
-      <a class="page-link <%=index==2?'active':''%>" href="/<%=page%>?page=2"
-        >2</a
-      >
-    </li>
-    <li class="page-item">
-      <a class="page-link <%=index==3?'active':''%>" href="/<%=page%>?page=3"
-        >3</a
-      >
-    </li>
+
+    <% } %>
 
     <li class="page-item">
       <a
         class="page-link"
-        href="/<%=page%>?page=<%=+index+1%>"
-        aria-label="Previous"
+        href="?page=<%=currentPage+1%>"
+        aria-label="Next"
       >
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
   </ul>
+  
+  <% } else if(currentPage==totalPages&&totalPages>1) { %>
+
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a
+          class="page-link"
+          href="?page=<%=currentPage-1%>"
+          aria-label="Previous"
+        >
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+  
+      <% for( let page = 1; page <=totalPages; page++ ) { %>
+      <li class="page-item">
+        <a
+          class="page-link <%=currentPage==page?"active":""%>"
+          href="?page=<%=page%>"
+          ><%=page%>
+        </a>
+      </li>
+  
+      <% } %>
+    </ul>
+
+
+    <% } else if(currentPage!=totalPages&&totalPages>1) { %>
+      
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <a
+            class="page-link"
+            href="?page=<%=currentPage-1%>"
+            aria-label="Previous"
+          >
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+    
+        <% for( let page = 1; page <=totalPages; page++ ) { %>
+        <li class="page-item">
+          <a
+            class="page-link <%=currentPage==page?"active":""%>"
+            href="?page=<%=page%>"
+            ><%=page%>
+          </a>
+        </li>
+
+
+    
+        <% } %>
+
+        <li class="page-item">
+          <a
+            class="page-link"
+            href="?page=<%=currentPage+1%>"
+            aria-label="Next"
+          >
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+      
+      
+      <%}%>
+
+
+
 </nav>
+
+
+
