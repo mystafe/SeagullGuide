@@ -6,16 +6,16 @@ const sequelize = require("./data/db");
 const dummyData = require("./data/dummyData");
 const Seagull = require("./models/seagullModel");
 const Expertise = require("./models/expertiseModel");
-
-// Expertise.hasMany(Seagull, {
-//   foreignKey: { name: "expertiseId", allowNull: true, defaultValue: 1 },
-//   onDelete: "RESTRICT",
-//   onUpdate: "RESTRICT",
-// });
+const User = require("./models/userModel");
+const Story = require("./models/seagullStoryModel");
 
 Seagull.belongsToMany(Expertise, { through: "seagullExpertises" });
 Expertise.belongsToMany(Seagull, { through: "seagullExpertises" });
 
+Story.belongsTo(User);
+User.hasMany(Story);
+
+//populate
 (async () => {
   try {
     await sequelize.sync({ force: true });

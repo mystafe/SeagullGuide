@@ -5,7 +5,7 @@ const config = {
     password: "Sifrem34.",
     database: "seagullguide",
   },
-  pageLimit: 2,
+  pageLimit: 3,
 };
 
 module.exports = config;

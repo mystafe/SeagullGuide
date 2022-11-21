@@ -1,9 +1,11 @@
 const Seagull = require("../models/seagullModel");
 const Expertise = require("../models/expertiseModel");
 const SlugField = require("../helpers/slugfield");
+const User = require("../models/userModel");
+const Story = require("../models/seagullStoryModel");
+
 async function Populate() {
   const count = await Expertise.count();
-  console.log(count);
   if (count == 0) {
     const expertises = await Expertise.bulkCreate([
       {
@@ -73,6 +75,37 @@ async function Populate() {
     expertises[1].addSeagull(seagulls[2]);
     expertises[3].addSeagull(seagulls[0]);
     expertises[2].addSeagull(seagulls[4]);
+
+    const users = await User.bulkCreate([
+      {
+        username: "admin",
+        fullname: "mustafa adm",
+        email: "dummy1@gmail.com",
+        isverified: 1,
+      },
+      {
+        username: "moderatedoo",
+        fullname: "emin erim",
+        email: "dummy2@gmail.com",
+        isverified: 1,
+      },
+      {
+        username: "moderatedosyone",
+        fullname: "demin derdim",
+        email: "dummy3@gmail.com",
+      },
+      {
+        username: "dummy4",
+        fullname: "dummy4 user",
+        email: "dummy4@gmail.com",
+        isverified: 1,
+      },
+    ]);
+
+    const stories = await Story.bulkCreate([
+      { title: "first story", content: "resim1.jpg" },
+      { title: "second story", content: "resim2.jpg" },
+    ]);
   }
 }
 
