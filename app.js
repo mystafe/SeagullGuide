@@ -1,7 +1,30 @@
 const express = require("express");
 const app = express();
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+
+//middlewares
+app.use(express.static("public"));
+app.use(express.static("node_modules"));
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(
+  session({
+    secret: "Test key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 5,
+    },
+  })
+);
+
+const authRoutes = require("./routes/authRoutes");
 const seagullRoutes = require("./routes/seagullRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const storyRoutes = require("./routes/storyRoutes");
+
 const sequelize = require("./data/db");
 const dummyData = require("./data/dummyData");
 const Seagull = require("./models/seagullModel");
@@ -30,13 +53,10 @@ User.hasMany(Story);
   }
 })();
 
-app.use(express.static("public"));
-app.use(express.static("node_modules"));
-app.set("view engine", "ejs");
-app.use(express.urlencoded({ extended: false }));
-
+app.use(authRoutes);
+app.use("/admin", adminRoutes);
+app.use(storyRoutes);
 app.use(seagullRoutes);
-app.use(adminRoutes);
 
 app.listen(3400, () => {
   console.log("server initalized...");

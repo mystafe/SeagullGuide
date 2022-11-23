@@ -1,0 +1,33 @@
+<%- include ("../partials/head",{title:"User Create"}) %> 
+  <body class="mx-3">    
+    <%- include ("../partials/nav") %>
+    <h1 class="mb-3">User Create Page</h1><hr />
+    
+<div class="container">
+  <form method="POST">
+    <div class="mb-3 col-md-6">
+      <label for="username" class="form-label">username</label>
+      <input type="text" class="form-control" id="username" name="username" value="newOne" />
+    </div> 
+      <div class="mb-3 col-md-6">
+        <label for="fullname" class="form-label">fullname</label>
+        <input type="text" class="form-control" id="fullname" name="fullname" value="new One" />
+      </div>
+    <div class="mb-3 col-md-6">
+      <label for="email" class="form-label">email</label>
+      <input type="email" class="form-control" id="email" name="email" value="new@One.com" />
+    </div>
+    <div class="mb-3 col-md-6">
+      <label for="password" class="form-label">password</label>
+      <input type="password" class="form-control" id="password" name="password" value="newOne" />
+    </div>  
+    <button type="submit" class="btn btn-primary">Create User </button>
+
+  </form>
+
+</div>
+
+<%- include ("../partials/footer") %>
+    
+</body>
+</html>

@@ -1,6 +1,7 @@
 const Expertise = require("../models/expertiseModel");
 
 exports.ExpertiseDelete = async function (req, res) {
+  console.log("ExpertiseDelete");
   const expertiseId = req.params.expertiseId;
   const expertise = await Expertise.findByPk(expertiseId);
   try {
@@ -16,31 +17,34 @@ exports.ExpertiseDelete = async function (req, res) {
   );
 };
 exports.GetDeletedExpertise = async function (req, res) {
+  console.log("GetDeletedExpertise");
   const expertiseId = req.params.expertiseId;
   const expertise = await Expertise.findByPk(expertiseId);
   return res.render("adminViews/adminExpertiseDelete", {
-    expertise: expertise,
+    expertise,
+    isAuth: req.session.isAuth,
   });
 };
 exports.GetExpertiseAdmin = async function (req, res) {
+  console.log("GetExpertiseAdmin");
   const expertiseId = req.params.expertiseId;
   try {
     const expertise = await Expertise.findByPk(expertiseId);
-
     res.render("adminViews/adminExpertiseEdit", {
       expertise: expertise,
       page: 0,
       index: 0,
       expertiseId: expertiseId,
       action: req.query.action,
-      action: req.query.expertiseName,
+      expertiseName: req.query.expertiseName,
+      isAuth: req.session.isAuth,
     });
   } catch (er) {
     console.log(er);
   }
 };
 exports.UpdateExpertise = async function (req, res) {
-  //const seagullId = req.params.seagullId;
+  console.log("UpdateExpertise");
   const expertiseId = req.body.id;
   const expertiseName = req.body.expertiseName;
   const expertise = await Expertise.findByPk(expertiseId);
@@ -54,20 +58,22 @@ exports.UpdateExpertise = async function (req, res) {
     { expertiseName, iconUrl },
     { where: { id: expertiseId } }
   );
-
   return res.redirect(
     `/admin/expertises?action=update&expertiseName=${expertiseName}`
   );
 };
 exports.GetExpertisesAdmin = async (req, res) => {
+  console.log("GetExpertisesAdmin");
   const expertises = await Expertise.findAll();
   res.render("adminViews/adminExpertises", {
     expertises: expertises,
     expertiseName: req.query.expertiseName,
     action: req.query.action,
+    isAuth: req.session.isAuth,
   });
 };
 exports.createExpertise = async (req, res) => {
+  console.log("createExpertise");
   const expertiseName = req.body.name;
   let iconUrl = "";
   try {

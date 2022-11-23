@@ -3,6 +3,7 @@ const Expertise = require("../models/expertiseModel");
 const SlugField = require("../helpers/slugfield");
 const User = require("../models/userModel");
 const Story = require("../models/seagullStoryModel");
+const bcrypt = require("bcrypt");
 
 async function Populate() {
   const count = await Expertise.count();
@@ -82,23 +83,27 @@ async function Populate() {
         fullname: "mustafa adm",
         email: "dummy1@gmail.com",
         isverified: 1,
+        passwordhash: await bcrypt.hash("123456", 10),
       },
       {
         username: "moderatedoo",
         fullname: "emin erim",
         email: "dummy2@gmail.com",
         isverified: 1,
+        passwordhash: await bcrypt.hash("123456", 10),
       },
       {
         username: "moderatedosyone",
         fullname: "demin derdim",
         email: "dummy3@gmail.com",
+        passwordhash: await bcrypt.hash("123456", 10),
       },
       {
         username: "dummy4",
         fullname: "dummy4 user",
         email: "dummy4@gmail.com",
         isverified: 1,
+        passwordhash: await bcrypt.hash("123456", 10),
       },
     ]);
 

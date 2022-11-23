@@ -1,0 +1,65 @@
+<%- include ("../partials/head",{title:"User Edit Page"}) %> 
+  <body class="mx-3">
+    <%- include ("../partials/nav") %>
+
+
+    <div class="d-flex justify-content-between">
+      <h3 class="d-flex mb-3">User edit page</h3>
+      <a href="/admin/users/create" class="btn btn-xl btn-primary">Create User 👤</a>
+     
+    </div><br>
+
+
+
+      
+      <hr>
+    </div>
+    
+    <div class="container mt-3">
+
+      <!-- alert section-->
+
+      <div class="row">
+        <div class="col-md-12  mt-3">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width: 250px;"> Username</th>
+                <th> Fullname</th>
+                <th style="width: 150px;">email</th>
+                <th style="width: 100px;">is Verificated?</th>
+
+                <th style="width: 100px;">Roles</th>
+                <th style="width: 100px;">Blogs</th>
+                <th style="width: 100px;">options</th>
+
+              </tr>
+            </thead>
+              <tbody>
+                <% users.forEach(user => { %>
+                  <tr>
+                    <td><%=user.username%></td>
+                    <td>                  
+                      <%=user.fullname%></td>
+                    <td><%=user.email%></td>
+                    <td><%=user.isverified%></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                      <button class="btn btn small btn-primary"> <a href="/admin/user/validate/<%=user.id%> ">🔑</a></button>
+                      <button class="btn btn small btn-primary"> <a href="/admin/user/edit/<%=user.id%> ">📝</a></button>
+                      <button class="btn btn small btn-danger"> <a href="/admin/user/delete/<%=user.id%> ">🗑️</a></button>     
+                    </td> 
+                  </tr>          
+                  <% }) %>                  
+               </tbody>
+          </table>         
+        </div>
+      </div>
+
+
+    </div>
+
+    <%- include ("../partials/footer") %>
+  </body>
+</html>
