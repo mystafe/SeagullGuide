@@ -1,12 +1,13 @@
 <%- include ("../partials/head",{title:"Register form"}) %> 
   <body class="mx-3">
     
-    <%- include ("../partials/nav") %>
-    
+    <%- include ("../partials/nav") %>  
     <h1 class="mb-3">Reset password page</h1><hr />
 
 <div class="container">
-  <form method="POST">
+  <form method="post">
+    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+
     <div class="mb-3 col-md-6">
       <label for="username" class="form-label">Username</label>
       <input type="text" class="form-control" id="username" name="username" value="newUser"/>

@@ -1,35 +1,89 @@
 const User = require("../models/userModel");
 const bcrpyt = require("bcrypt");
+const mailApp = require("../helpers/sendMail");
+const config = require("../helpers/config");
+const crypto = require("crypto");
+
+exports.VerifyUser = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const user = await User.findByPk(id);
+    const email = user.email;
+    const passwordtoken = await crypto.randomBytes(32).toString("hex");
+    console.log(email, passwordtoken);
+    await user.update({ passwordtoken });
+    await mailApp.sendMail({
+      from: config.mail.from,
+      to: email,
+      subject: "Verify your account",
+      html: `<div class="card">
+      <p>You can verify your account using the link below</p>
+      <p>
+        <a href="localhost:3400/user/verify?passwordtoken=${passwordtoken}">Verify My Account</a>
+      </p>
+    </div>
+  `,
+    });
+    return res.redirect(
+      `/admin/users?action=verification&username=${user.username}`
+    );
+  } catch (error) {
+    console.log(error);
+  }
+  res.redirect("/login");
+};
 
 exports.DeleteUserGet = async (req, res) => {
   console.log("DeleteUserGet");
+  const id = req.params.id;
+  const user = await User.findByPk(id);
+
   try {
   } catch (error) {
     console.log(error);
   }
-  res.render("adminViews/adminDeleteUser");
+  res.render("adminViews/adminDeleteUser", { user });
 };
 exports.DeleteUserPost = async (req, res) => {
   console.log("DeleteUserPost");
+
+  const Oldid = req.body.id;
+  const id = req.params.id;
+  console.log(Oldid);
+  console.log(id);
+  var username = "";
   try {
+    const deletedUser = await User.findByPk(id);
+    if (deletedUser) {
+      try {
+        username = deletedUser.username;
+        await User.destroy({
+          where: {
+            id,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
   } catch (error) {
     console.log(error);
   }
-  res.redirect("adminViews/adminUsers");
+  return res.redirect(`/admin/users?action=delete&username=${username}`);
 };
 exports.GetUsers = async (req, res) => {
   console.log("GetUsers");
-  console.log(req.session.isAuth);
   try {
     const users = await User.findAll();
     return res.render("adminViews/adminUsers", {
       users,
-      isAuth: req.session.isAuth,
+      username: req.query.username,
+      action: req.query.action,
     });
   } catch (error) {
     console.log(error);
   }
-  res.render("/", { isAuth: req.session.isAuth });
+  res.render("/", { username: req.query.username, action: req.query.action });
 };
 exports.EditUserGet = async (req, res) => {
   console.log("EditUserGet");
@@ -37,7 +91,7 @@ exports.EditUserGet = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  res.render("adminViews/adminUserEdit");
+  res.render("adminViews/adminUserEdit", {});
 };
 exports.EditUserPost = async (req, res) => {
   console.log("EditUserPost");
@@ -53,7 +107,7 @@ exports.CreateUserGet = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  res.render("adminViews/adminUserCreate");
+  res.render("adminViews/adminUserCreate", {});
 };
 exports.CreateUserPost = async (req, res) => {
   console.log("CreateUserPost");

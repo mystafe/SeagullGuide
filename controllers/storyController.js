@@ -6,7 +6,7 @@ exports.GetStoriesAdmin = async (req, res) => {
       console.log(error);
     }
     return res.render("adminViews/adminStories", {
-      isAuth: req.session.isAuth,
+      csrfToken: req.csrfToken(),
     });
   }
   res.redirect("/");
@@ -18,7 +18,7 @@ exports.CreateStoryGet = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  render("adminViews/adminStoryCrete", { isAuth: req.session.isAuth });
+  render("adminViews/adminStoryCrete", { csrfToken: req.csrfToken() });
 };
 exports.CreateStoryPost = async (req, res) => {
   console.log("CreateStoryPost");
@@ -35,7 +35,7 @@ exports.DeleteStoryGet = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  render("adminViews/adminStoryDelete"), { isAuth: req.session.isAuth };
+  render("adminViews/adminStoryDelete", { csrfToken: req.csrfToken() });
 };
 
 exports.DeleteStoryPost = async (req, res) => {
@@ -53,17 +53,16 @@ exports.EditStoryGet = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  res.redirect("adminViews/adminStoryEdit", { isAuth: req.session.isAuth });
+  res.redirect("adminViews/adminStoryEdit", { csrfToken: req.csrfToken() });
 };
 
 exports.EditStoryPost = async (req, res) => {
   console.log("EditStoryPost");
-
   try {
   } catch (error) {
     console.log(error);
   }
-  res.redirect("adminViews/adminStories", { isAuth: req.session.isAuth });
+  res.redirect("adminViews/adminStories");
 };
 
 exports.GetStoriesMainpage = async (req, res) => {
@@ -73,7 +72,7 @@ exports.GetStoriesMainpage = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  res.render("storyViews/featured", { isAuth: req.session.isAuth });
+  res.render("storyViews/featured", { csrfToken: req.csrfToken() });
 };
 
 exports.GetStoriesAll = async (req, res) => {
@@ -85,7 +84,7 @@ exports.GetStoriesAll = async (req, res) => {
   }
   res.render("storyViews/stories", {
     message: null,
-    isAuth: req.session.isAuth,
+    csrfToken: req.csrfToken(),
   });
 };
 
@@ -95,5 +94,5 @@ exports.GetStoryDetail = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  res.render("storyViews/story", { isAuth: req.session.isAuth });
+  res.render("storyViews/story", { csrfToken: req.csrfToken() });
 };

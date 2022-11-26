@@ -35,7 +35,7 @@ exports.GetSeagullsByExpertise = async (req, res) => {
     expertiseId,
     seagullName: req.query.seagullName,
     action: req.query.action,
-    isAuth: req.session.isAuth,
+    csrfToken: req.csrfToken(),
   });
 };
 
@@ -50,7 +50,7 @@ exports.GetSeagull = async (req, res) => {
   res.render("seagullViews/seagullDetail", {
     seagull,
     expertises,
-    isAuth: req.session.isAuth,
+    csrfToken: req.csrfToken(),
   });
 };
 exports.GetSeagulls = async (req, res) => {
@@ -91,7 +91,6 @@ exports.GetSeagulls = async (req, res) => {
       currentPage: page,
       expertises,
       expertiseId: 0,
-      isAuth: req.session.isAuth,
     });
   } else {
     seagulls = await Seagull.findAndCountAll({
@@ -108,15 +107,28 @@ exports.GetSeagulls = async (req, res) => {
     currentPage: page,
     expertises,
     expertiseId: 0,
-    isAuth: req.session.isAuth,
   });
 };
 exports.GetMainPage = async (req, res) => {
   console.log("GetMainPage");
-  console.log(req.session.isAuth);
+  const randomNames = [
+    "Bora",
+    "Cemil",
+    "Cesur",
+    "Cici",
+    "Melek",
+    "Nazli",
+    "Nemo",
+    "Tatlis",
+    "Umut",
+  ];
+  const randomNumber = Math.floor(Math.random() * randomNames.length);
   try {
   } catch (error) {
     console.log(error);
   }
-  res.render("main", { isAuth: req.session.isAuth });
+  return res.render("main", {
+    randomSeagull: randomNames[randomNumber],
+    csrfToken: req.csrfToken(),
+  });
 };

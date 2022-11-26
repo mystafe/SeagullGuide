@@ -19,6 +19,11 @@
 <div class="alert alert-success">
   <p class="mb-3"><b><%=name%></b> is <b><%=action%>d</b>.</p>
 </div>
+<% } %> <% if (action=="verification") { %>
+
+<div class="alert alert-success">
+  <p class="mb-3">Verification mail sent to <b><%=name%></b>.</p>
+</div>
 <% } %> <% if (action=="unlike") { %>
 
 <div class="alert alert-danger">

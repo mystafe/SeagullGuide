@@ -133,7 +133,7 @@ exports.GetSeagullsAdmin = async (req, res) => {
     expertises,
     seagullName: req.query.seagullName,
     action: req.query.action,
-    isAuth: req.session.isAuth,
+    csrfToken: req.csrfToken(),
   });
 };
 exports.GetDeletedSeagull = async (req, res) => {
@@ -142,7 +142,7 @@ exports.GetDeletedSeagull = async (req, res) => {
   const seagull = await Seagull.findByPk(seagullId);
   res.render("adminViews/adminSeagullDelete", {
     seagull,
-    isAuth: req.session.isAuth,
+    csrfToken: req.csrfToken(),
   });
 };
 exports.DeleteSeagull = async function (req, res) {
@@ -166,17 +166,16 @@ exports.GetSeagullAdmin = async (req, res) => {
   });
   const seagulls = await Seagull.findAll();
   const expertises = await Expertise.findAll();
-
   res.render("adminViews/adminSeagullEdit", {
     seagulls: seagulls,
     seagull: seagull,
     expertises: expertises,
     seagullName: req.query.seagullName,
     action: req.query.action,
-    isAuth: req.session.isAuth,
+    csrfToken: req.csrfToken(),
   });
 };
 exports.GetAdminPage = async (req, res) => {
   console.log("GetAdminPage");
-  res.render("main", { isAuth: req.session.isAuth });
+  res.render("main", { csrfToken: req.csrfToken() });
 };

@@ -10,7 +10,7 @@ const User = sequelize.define(
     isverified: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 0 },
     passwordhash: { type: DataTypes.STRING },
     passwordtoken: { type: DataTypes.STRING },
-    tokenexpiresin: { type: DataTypes.STRING },
+    tokenexpiresin: { type: DataTypes.DATE },
   },
   { timestamps: true }
 );

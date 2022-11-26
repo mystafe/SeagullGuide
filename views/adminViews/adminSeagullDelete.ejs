@@ -10,8 +10,8 @@
           <p class="mb-3">
             Are you sure to delete seagull <b><%=seagull.seagullName %>?</b>
           </p>
-          <form method="post">
-              <input type="hidden">
+          <form method="post" action="/admin/seagull/delete/<%=seagull.id%>">
+              <input type="hidden" value="<%=csrfToken%>" name="_csrf">
               <button class="btn btn-danger" type="submit">Yes</button>
               <a class="btn btn-secondary" href="/admin/seagulls">No</a>
               

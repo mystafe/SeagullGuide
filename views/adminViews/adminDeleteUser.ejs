@@ -1,11 +1,23 @@
 <%- include ("../partials/head",{title:"Delete Useer"}) %> 
   <body class="mx-3">    
     <%- include ("../partials/nav") %>
-    <h1 class="mb-3">Delete User Page password page</h1><hr />
+    <h1 class="mb-3">Delete User Page password page</h1>
     
 <div class="container">
 
-  Delete User
+    <form method="post" action="/admin/user/delete/<%=user.id%>">
+      <input type="hidden" value="<%=csrfToken%>" name="_csrf">
+      <input type="hidden" value="<%=user.id%>" name="id">
+      <div class="alert alert-warning">
+          <p mb-3>   Do you want to delete user <strong><%=user.username%></strong>? <%=user.id%> <%=csrfToken%> </p>
+          <button type="submit" class="btn btn-danger">Delete</button>
+          <a class="btn btn-secondary" href="/admin/users">Cancel</a> 
+        </div>
+    </form>
+
+
+  
+
 
 </div>
 

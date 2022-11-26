@@ -22,7 +22,7 @@ exports.GetDeletedExpertise = async function (req, res) {
   const expertise = await Expertise.findByPk(expertiseId);
   return res.render("adminViews/adminExpertiseDelete", {
     expertise,
-    isAuth: req.session.isAuth,
+    csrfToken: req.csrfToken(),
   });
 };
 exports.GetExpertiseAdmin = async function (req, res) {
@@ -37,7 +37,7 @@ exports.GetExpertiseAdmin = async function (req, res) {
       expertiseId: expertiseId,
       action: req.query.action,
       expertiseName: req.query.expertiseName,
-      isAuth: req.session.isAuth,
+      csrfToken: req.csrfToken(),
     });
   } catch (er) {
     console.log(er);
@@ -69,7 +69,7 @@ exports.GetExpertisesAdmin = async (req, res) => {
     expertises: expertises,
     expertiseName: req.query.expertiseName,
     action: req.query.action,
-    isAuth: req.session.isAuth,
+    csrfToken: req.csrfToken(),
   });
 };
 exports.createExpertise = async (req, res) => {

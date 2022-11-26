@@ -13,7 +13,7 @@
         </li>
 
 
-        <% if (typeof isAuth&&isAuth==1) { %>
+        <% if (isAuth) { %>
          
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/favorites">Favorites</a>
@@ -38,7 +38,7 @@
           <a class="nav-link active" aria-current="page" href="/stories">All stories</a>
         </li>
 
-        <% if (typeof isAuth&&isAuth==1) { %>
+        <% if (isAuth) { %>
 
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/admin/users">Users Edit</a>
@@ -52,7 +52,7 @@
         </li>
         <% } %>
 
-        <% if (typeof isAuth&&isAuth!=1) { %>
+        <% if (!isAuth) { %>
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/login">Login</a>
         </li>
@@ -64,8 +64,10 @@
         </li>
       </ul>
 
-      <% if (typeof isAuth && isAuth==1)  { %>
+      <% if (isAuth)  { %>
         <form class="d-flex">
+          <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+
           <input
             class="form-control me-2"
             type="search"
@@ -74,6 +76,10 @@
           />
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
+        
+        <button type="button" class="mx-3 btn bnt-sm btn-danger bg-danger   btn-link text-decoration-none "><a class=" text-decoration-none text-white" href="/logout">Logout</a> </button>
+
+        <button class=" btn bnt-sm btn-primary"><%=fullname%> </button>
   
       <% } %>
 

@@ -2,7 +2,8 @@
 <hr />
 
 <div class="container mt-3">
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" action="/admin/seagulls?_csrf=<%=csrfToken%>">
+    <!--csrf-->
     <div class="col-md-12 mt-3">
       <div class="row">
         <div class="col-md-7">

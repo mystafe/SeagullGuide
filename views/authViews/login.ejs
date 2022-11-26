@@ -13,19 +13,22 @@
   <% } %>
   
   <form method="post">
+
+    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
     <div class="mb-3 col-md-6">
       <label for="username" class="form-label">Username</label>
-      <input type="text" class="form-control" id="username" name="username" />
-    </div>
-  
-
+      <input type="text" class="form-control" id="username" name="username" value="admin"/>
+    </div>   
+    
     <div class="mb-3 col-md-6">
       <label for="password" class="form-label">Password</label>
-      <input type="password" class="form-control" id="password" name="password" />
+      <input type="password" class="form-control" id="password" name="password" value="123456" />
     </div>
+
     <button type="submit" class="btn btn-primary">Login</button>
     <a href="/register" class="btn btn-primary">Register</a>
     <a href="/forget-password" class="btn btn-primary">Forget password</a>
+    <a href="/verification" class="btn btn-primary">Verify my account</a>
   </form>
 
 </div>

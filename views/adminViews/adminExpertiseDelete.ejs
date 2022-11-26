@@ -11,7 +11,8 @@
             Are you sure to delete expertise <b><%=expertise.expertiseName %>?</b>
           </p>
           <form method="post">
-              <input type="hidden">
+              <input type="hidden" value="<%=csrfToken%>" name="_csrf">
+            
               <button class="btn btn-danger" type="submit">Yes</button>
               <a class="btn btn-secondary" href="/admin/expertises">No</a>
               

@@ -1,24 +1,21 @@
 <%- include ("../partials/head",{title:"User Edit Page"}) %> 
   <body class="mx-3">
     <%- include ("../partials/nav") %>
-
-
     <div class="d-flex justify-content-between">
       <h3 class="d-flex mb-3">User edit page</h3>
-      <a href="/admin/users/create" class="btn btn-xl btn-primary">Create User 👤</a>
-     
+      <a href="/admin/users/create" class="btn btn-xl btn-primary">Create User 👤</a>     
     </div><br>
-
-
-
-      
       <hr>
     </div>
     
     <div class="container mt-3">
 
-      <!-- alert section-->
+      <% if (username&&action) { %>
+        <%- include("../partials/alert",{name: username,action:action })%> 
+      <% } %>
 
+
+      <!-- alert section-->
       <div class="row">
         <div class="col-md-12  mt-3">
           <table class="table table-bordered table-striped">
@@ -28,11 +25,9 @@
                 <th> Fullname</th>
                 <th style="width: 150px;">email</th>
                 <th style="width: 100px;">is Verificated?</th>
-
                 <th style="width: 100px;">Roles</th>
                 <th style="width: 100px;">Blogs</th>
                 <th style="width: 100px;">options</th>
-
               </tr>
             </thead>
               <tbody>
@@ -56,10 +51,7 @@
           </table>         
         </div>
       </div>
-
-
     </div>
-
     <%- include ("../partials/footer") %>
   </body>
 </html>

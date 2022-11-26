@@ -43,7 +43,8 @@
                     </a>  
                     </td>
                     <td>                  
-                      <form method="post" enctype="multipart/form-data">
+                      <form method="post" enctype="multipart/form-data" action="/admin/seagulls?_csrf=<%=csrfToken%>">
+                          <!--csrf token-->
                           <input class="form-control" type="hidden" id="seagullId" name="seagullId" value="<%=seagull.id%>"/>
                           <input class="form-control" type="hidden" id="seagullName" name="seagullName" value="<%=seagull.seagullName%>"/>
                           <input class="form-control" type="hidden" id="likeStatus" name="likeStatus" value="1"/>
@@ -73,7 +74,7 @@
                     
                     <td>
                       <button class="btn btn small btn-primary"> <a href="/admin/seagull/<%=seagull.id%> ">📝</a></button>
-                      <button class="btn btn small btn-danger"> <a href="/admin/seagull/delete/<%=seagull.id%> ">🗑️</a></button>     
+                      <button class="btn btn small btn-danger"> <a href="/admin/seagull/delete/<%=seagull.id%>">🗑️</a></button>     
                     </td> 
                   </tr>          
                   <% }) %>                  

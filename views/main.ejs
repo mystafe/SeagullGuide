@@ -3,13 +3,19 @@
 
 <body class="mx-3">
   <%- include ("partials/nav")%>
-  <h1 class="mb-3">Main page</h1>
+  <h1 class="mb-3">Main page</h1><hr>
+
 
   <div class="container">
     <a href="/seagulls">
-      <img class="mx-5" src="/images/seagull01.png" alt="" width="450" />
+      <img class="" src="/images/<%=randomSeagull%>.jpg" alt="" width="450"/>
     </a>
+    <div>
+      <strong><%=randomSeagull%></strong>
+    </div>
+   
   </div>
+  
 
   <%- include ("partials/footer") %>
 </body>

@@ -11,7 +11,9 @@
 
             <div class="col-md-12 mt-3">   
 
-              <form method="post"  enctype="multipart/form-data">
+              <form method="post"  enctype="multipart/form-data" action="/admin/expertise/<%=expertise.id%>?_csrf=<%=csrfToken%>">
+
+                <!--csrf token-->
 
                 <input type="hidden" name="id" value="<%=expertise.id%>">
                   
