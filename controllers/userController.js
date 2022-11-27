@@ -3,6 +3,9 @@ const bcrpyt = require("bcrypt");
 const mailApp = require("../helpers/sendMail");
 const config = require("../helpers/config");
 const crypto = require("crypto");
+const Role = require("../models/roleModel");
+const { render } = require("ejs");
+const sequelize = require("../data/db");
 
 exports.VerifyUser = async (req, res) => {
   const id = req.params.id;
@@ -32,7 +35,6 @@ exports.VerifyUser = async (req, res) => {
   }
   res.redirect("/login");
 };
-
 exports.DeleteUserGet = async (req, res) => {
   console.log("DeleteUserGet");
   const id = req.params.id;
@@ -74,7 +76,10 @@ exports.DeleteUserPost = async (req, res) => {
 exports.GetUsers = async (req, res) => {
   console.log("GetUsers");
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      include: { model: Role },
+    });
+
     return res.render("adminViews/adminUsers", {
       users,
       username: req.query.username,
@@ -87,7 +92,13 @@ exports.GetUsers = async (req, res) => {
 };
 exports.EditUserGet = async (req, res) => {
   console.log("EditUserGet");
+  const id = req.params.id;
   try {
+    const user = await User.findByPk(id, {
+      include: { model: Role },
+    });
+    const roles = await Role.findAll();
+    return res.render("adminViews/adminUserEdit", { user, roles });
   } catch (error) {
     console.log(error);
   }
@@ -95,11 +106,31 @@ exports.EditUserGet = async (req, res) => {
 };
 exports.EditUserPost = async (req, res) => {
   console.log("EditUserPost");
+  const userid = req.body.userid;
+  const username = req.body.username;
+  const fullname = req.body.fullname;
+  const email = req.body.email;
+  const roleids = req.body.roleids;
+  const isverified = req.body.isverified;
   try {
+    const user = await User.findByPk(userid);
+    user.update({ username, fullname, email, isverified });
+
+    await sequelize.query(`delete from userroles where userId=${userid}`);
+    if (roleids == undefined) {
+    } else if (roleids.length < 2) {
+      await sequelize.query(
+        `insert into userroles values (${userid},${roleids} )`
+      );
+    } else {
+      await roleids.forEach((roleid) => {
+        sequelize.query(`insert into userroles values (${userid},${roleid})`);
+      });
+    }
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   }
-  res.redirect("adminViews/adminUsers");
+  res.redirect("/admin/users");
 };
 exports.CreateUserGet = async (req, res) => {
   console.log("CreateUserGet");
@@ -122,4 +153,38 @@ exports.CreateUserPost = async (req, res) => {
     console.log(error);
   }
   return res.redirect("/admin/users");
+};
+
+exports.EditRolePost = async (req, res) => {
+  console.log("EditRolePost");
+  const roleid = req.body.roleid;
+  try {
+    const ids = req.body["userids[]"];
+    if (ids == undefined) {
+      await sequelize.query(`delete from userroles where roleId=${roleid}`);
+    } else if (ids.length < 2) {
+      await sequelize.query(`delete from userroles where roleId=${roleid}`);
+      await sequelize.query(`insert into userroles values (${ids},${roleid})`);
+    } else {
+      await sequelize.query(`delete from userroles where roleId=${roleid} `);
+      await ids.forEach((id) => {
+        sequelize.query(`insert into userroles values (${id},${roleid})`);
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  return res.redirect("/admin/roles");
+};
+exports.EditRoleGet = async (req, res) => {
+  console.log("EditRoleGet");
+  const id = req.params.id;
+  try {
+    const role = await Role.findByPk(id, { include: { model: User } });
+    const users = await User.findAll({ include: { model: Role } });
+    return res.render("adminViews/adminRoleEdit", { role, users });
+  } catch (error) {
+    console.log(error);
+  }
+  return res.redirect("/admin/roles");
 };

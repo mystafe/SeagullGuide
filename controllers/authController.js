@@ -6,8 +6,8 @@ const config = require("../helpers/config");
 const crypto = require("crypto");
 
 exports.VerifyUserWithToken = async (req, res) => {
+  console.log("VerifyUserWithToken");
   const passwordtoken = req.query.passwordtoken;
-  console.log(passwordtoken);
   const verifyuser = await User.findOne({ where: { passwordtoken } });
   if (verifyuser && verifyuser.tokenexpiresin > Date.now()) {
     await verifyuser.update({
@@ -82,11 +82,8 @@ exports.post_register = async function (req, res) {
         [Op.or]: [{ username: username }, { email: email }],
       },
     });
-
-    console.log(existingUser);
     if (existingUser) return res.redirect("/");
     const user = await User.create({ username, fullname, email, passwordhash });
-    console.log(User);
     req.session.isAuth = true;
 
     await emailApp.sendMail({
@@ -126,15 +123,15 @@ exports.post_login = async function (req, res) {
 
     if (user) {
       const verify = await bcrpyt.compare(password, user.passwordhash);
-      console.log("passwordandhash: " + password, user.passwordhash);
 
       if (verify) {
-        //res.cookie("isAuth", 1);
-        req.session.isAuth = true;
+        req.session.isAuth = 1;
+        const roles = await user.getRoles();
+        req.session.isAdmin = !roles.every(
+          (role) => role.dataValues.rolename != "Admin"
+        );
         req.session.fullname = user.fullname;
         const url = req.query.returnUrl || "/";
-        console.log(req.query);
-        console.log(url);
         return res.redirect(url);
       } else {
         return res.render("authViews/login", {

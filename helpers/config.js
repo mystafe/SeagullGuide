@@ -8,9 +8,9 @@ const config = {
   pageLimit: 3,
 
   mail: {
-    user: "mustafaxx99@hotmail.com",
-    pass: "Sifremm34.",
-    from: "mustafaxx99@hotmail.com",
+    user: "", //"mustafaxx99@hotmail.com",
+    pass: "", //"Sifremm34.",
+    from: "", //"mustafaxx99@hotmail.com",
   },
 };
 

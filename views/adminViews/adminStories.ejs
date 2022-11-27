@@ -4,6 +4,13 @@
 <body class="mx-3">
   <h1 class="mb-3">Admin Stories List</h1>
   <hr />
-  <div class="container">Here are stories</div>
+
+  <div class="container">
+    <div class="row">
+      <% stories.forEach(story => { %> <%- include("adminStory",{story}) %> <%
+      })%>
+    </div>
+  </div>
+
   <%- include("../partials/footer") %>
 </body>

@@ -2,6 +2,92 @@
 <%-include("../partials/nav") %>
 
 <body class="mx-3">
-  <div class="container">Here is User Edit</div>
+  <h1 class="mb-3">User edit page</h1>
+  <div class="container border my-3">
+    <div class="row">
+      <div class="col-md-8 mt-3">
+        <form method="post" action="/admin/user/edit/<%=user.id%>">
+          <input type="hidden" value="<%=csrfToken%>" name="_csrf" />
+          <input type="hidden" name="userid" value="<%=user.id%>" />
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="username"
+              >Username</label
+            >
+            <div class="col-sm-8">
+              <input
+                class="form-control"
+                type="text"
+                name="username"
+                value="<%= user.username%>"
+              />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="fullname"
+              >Fullname</label
+            >
+            <div class="col-sm-8">
+              <input
+                class="form-control"
+                type="text"
+                name="fullname"
+                value="<%= user.fullname%>"
+              />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="email">Email</label>
+            <div class="col-sm-8">
+              <input
+                class="form-control"
+                type="email"
+                name="email"
+                value="<%= user.email%>"
+              />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="isverified"
+              >Is verified</label
+            >
+            <div class="col-sm-8">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="isverified"
+                <% if (user.isverified==1) { %> checked <% } %> value="1" />
+                <label class="form-check-label" for="isverified"> Yes </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="isverified"
+                value="0" <% if (user.isverified==0) { %> checked <% } %> />
+                <label class="form-check-label" for="isverified"> No </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="roleids">Role:</label>
+            <div class="col-sm-8">
+              <% roles.forEach(role => { %>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                id="role_<%=role.id%>" name="roleids" value="<%=role.id%>"
+                <%=user.roles.some(userrole=>userrole.id==role.id)?"checked":""%>/>
+                <label class="form-check-label" for="roleids"
+                  ><%=role.rolename%>*</label
+                >
+              </div>
+              <% }) %>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-8 offset-sm-2">
+              <button class="btn btn-primary" type="submit">Update</button>
+              <a href="/admin/users">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
   <%- include("../partials/footer") %>
 </body>

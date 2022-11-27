@@ -4,6 +4,7 @@ const SlugField = require("../helpers/slugfield");
 const User = require("../models/userModel");
 const Story = require("../models/seagullStoryModel");
 const bcrypt = require("bcrypt");
+const Role = require("../models/roleModel");
 
 async function Populate() {
   const count = await Expertise.count();
@@ -71,19 +72,6 @@ async function Populate() {
       },
     ]);
 
-    expertises[0].addSeagull(seagulls[0]);
-    expertises[1].addSeagull(seagulls[1]);
-    expertises[2].addSeagull(seagulls[2]);
-    expertises[3].addSeagull(seagulls[1]);
-    expertises[3].addSeagull(seagulls[3]);
-    expertises[0].addSeagull(seagulls[3]);
-    expertises[0].addSeagull(seagulls[4]);
-    expertises[1].addSeagull(seagulls[4]);
-    expertises[2].addSeagull(seagulls[3]);
-    expertises[1].addSeagull(seagulls[2]);
-    expertises[3].addSeagull(seagulls[0]);
-    expertises[2].addSeagull(seagulls[4]);
-
     const users = await User.bulkCreate([
       {
         username: "admin",
@@ -115,9 +103,49 @@ async function Populate() {
     ]);
 
     const stories = await Story.bulkCreate([
-      { title: "first story", content: "resim1.jpg" },
-      { title: "second story", content: "resim2.jpg" },
+      {
+        content: "“Wherever there are birds, there is hope”",
+        imageUrl: "Cemil.jpg",
+      },
+      {
+        content:
+          "“Birds chirping around you is a beautiful realization that life is incredibly good. Let this sound be a gentle break in your routine.”",
+        imageUrl: "Nazli.jpg",
+      },
+      {
+        content:
+          "“Every bird, every tree, every flower reminds me what a blessing and privilege it is just to be alive.”",
+        imageUrl: "Capcap.jpg",
+      },
     ]);
+
+    const roles = await Role.bulkCreate([
+      { rolename: "Admin" },
+      { rolename: "Moderator" },
+      { rolename: "Regular User" },
+    ]);
+
+    const popRel = () => {
+      expertises[0].addSeagull(seagulls[0]);
+      expertises[1].addSeagull(seagulls[1]);
+      expertises[2].addSeagull(seagulls[2]);
+      expertises[3].addSeagull(seagulls[1]);
+      expertises[3].addSeagull(seagulls[3]);
+      expertises[0].addSeagull(seagulls[3]);
+      expertises[0].addSeagull(seagulls[4]);
+      expertises[1].addSeagull(seagulls[4]);
+      expertises[2].addSeagull(seagulls[3]);
+      expertises[1].addSeagull(seagulls[2]);
+      expertises[3].addSeagull(seagulls[0]);
+      expertises[2].addSeagull(seagulls[4]);
+
+      users[0].addRole(roles[0]);
+      users[0].addRole(roles[1]);
+      users[1].addRole(roles[1]);
+      users[2].addRole(roles[2]);
+      users[3].addRole(roles[2]);
+    };
+    popRel();
   }
 }
 

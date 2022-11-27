@@ -6,7 +6,6 @@ router.get("/no", authController.get_noAuth);
 router.get("/verification", authController.get_verification);
 router.post("/verification", authController.post_verification);
 router.get("/user/verify/", authController.VerifyUserWithToken);
-
 router.post("/login", authController.post_login);
 router.get("/login", authController.get_login);
 router.get("/logout", authController.get_logout);

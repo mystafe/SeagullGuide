@@ -23,11 +23,11 @@
               <tr>
                 <th style="width: 250px;"> Username</th>
                 <th> Fullname</th>
-                <th style="width: 150px;">email</th>
-                <th style="width: 100px;">is Verificated?</th>
-                <th style="width: 100px;">Roles</th>
-                <th style="width: 100px;">Blogs</th>
-                <th style="width: 100px;">options</th>
+                <th style="width: 150px;">Email</th>
+                <th style="width: 100px;">Is verified?</th>
+                <th style="width: 120px;">Roles</th>
+                <th style="width: 120px;">Stories</th>
+                <th style="width: 100px;">Options</th>
               </tr>
             </thead>
               <tbody>
@@ -38,7 +38,9 @@
                       <%=user.fullname%></td>
                     <td><%=user.email%></td>
                     <td><%=user.isverified%></td>
-                    <td></td>
+                    <td><% user.roles.forEach(role => { %>
+                     <p><%=role.rolename%> </p>
+                    <% }) %></td>
                     <td></td>
                     <td>
                       <button class="btn btn small btn-primary"> <a href="/admin/user/validate/<%=user.id%> ">🔑</a></button>

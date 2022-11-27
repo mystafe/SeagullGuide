@@ -8,6 +8,11 @@
 <div class="alert alert-danger">
   <p class="mb-3"><b><%=name%></b> is <b><%=action%>d</b>.</p>
 </div>
+<% } %> <% if (action=="remove") { %>
+<div class="alert alert-danger">
+  <p class="mb-3"><b><%=name%></b>'s role is <b><%=action%>d</b>.</p>
+</div>
+
 <% } %> <% if (action=="update") { %>
 
 <div class="alert alert-primary">

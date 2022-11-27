@@ -24,6 +24,7 @@ const Seagull = require("./models/seagullModel");
 const Expertise = require("./models/expertiseModel");
 const User = require("./models/userModel");
 const Story = require("./models/seagullStoryModel");
+const Role = require("./models/roleModel");
 
 //Middlewares
 const locals = require("./middlewares/locals");
@@ -37,7 +38,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 5,
+      maxAge: 1000 * 60 * 15,
     },
     store: new SequelizeStore({ db: sequelize }),
   })
@@ -53,12 +54,14 @@ Expertise.belongsToMany(Seagull, { through: "seagullExpertises" });
 
 Story.belongsTo(User);
 User.hasMany(Story);
+User.belongsToMany(Role, { through: "userroles" });
+Role.belongsToMany(User, { through: "userroles" });
 
 //populate
 (async () => {
   try {
-    //await sequelize.sync({ force: true });
-    //await dummyData();
+    // await sequelize.sync({ force: true });
+    // await dummyData();
   } catch (error) {
     console.log(error);
   }

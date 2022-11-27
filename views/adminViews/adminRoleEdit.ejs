@@ -1,0 +1,64 @@
+<%- include ("../partials/head",{title:"Role Edit"}) %> 
+  <body class="mx-3">
+
+
+    <%- include ("../partials/nav") %>
+
+    <h1 class="mb-3">Role edit page</h1>
+
+    <div class="container mt-3 border my-3">
+
+
+          <div class="row">
+            <div class="col-md-12 mt-3">               
+              <form method="post" action="/admin/role/edit/<%=role.id%>?_csrf=<%=csrfToken%>">
+
+                <input type="hidden" name="roleid" value="<%=role.id%>">
+
+
+                <div class="row mb-3">
+                  <label for="rolename" class="col-sm-2 col-form-label">Role name: </label>
+                  <div class="col-sm-8">
+                    <input class="form-control" type="text" id="rolename" name="rolename" value="<%=role.rolename%>">
+                    </div>
+                  </div>
+
+                
+                  <div class="row mb-3">
+                    <label for="roleids" class="col-sm-2 col-form-label">Users: </label>
+                    <div class="col-sm-8">
+                      <% users.forEach(user => { %>    
+                        <div class="form-check">
+                         <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="userid<%=user.id %>"
+                          name="userids[]"
+                          value="<%=user.id%>"
+                          <%=user.roles.some(userrole=>userrole.id==role.id)?"checked":""%> 
+                          />
+                          <label class="form-check-label" for="user_<%=user.id %>"
+                          ><%=user.fullname%>
+                        </label>
+                      </div>
+                      <% }) %>
+                    </div>
+                 </div>
+
+
+                  <div class="row mb-3">
+                    <div class="col-sm-8 offset-sm-2">
+                      <button type="submit" class="btn btn-primary">Update</button>    
+                    </div>
+                  </div>
+
+
+              </form>
+            </div>
+          </div>
+    </div>
+
+
+    <%- include ("../partials/footer") %>
+  </body>
+</html>

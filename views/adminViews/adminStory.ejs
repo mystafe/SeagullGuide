@@ -1,0 +1,18 @@
+<div class="col-md-6 mb-3">
+  <div class="card bg-dark text-white" style="width: 100%">
+    <img
+      src="/images/<%=story.imageUrl%>"
+      class="card-img img-overlay"
+      alt="..."
+      height="600"
+    />
+    <div class="card-img-overlay">
+      <div class="card"></div>
+      <p class="card-text"><%=story.content%></p>
+      <p class="card-text">
+        Last updated <%=Math.floor((Date.now()-story.createdAt)/1000/60)%> mins
+        ago
+      </p>
+    </div>
+  </div>
+</div>

@@ -4,8 +4,8 @@ const sequelize = require("../data/db");
 const Story = sequelize.define(
   "story",
   {
-    title: { type: DataTypes.STRING, allownull: false },
     content: { type: DataTypes.STRING, allownull: false },
+    imageUrl: { type: DataTypes.STRING, allownull: false },
   },
   { timestamps: true, updatedAt: false }
 );

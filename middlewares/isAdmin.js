@@ -1,5 +1,4 @@
 module.exports = (req, res, next) => {
-  if (!res.locals.isAuth)
-    return res.redirect("/login?returnUrl=" + req.originalUrl);
+  if (!res.locals.isAdmin) return res.render("authviews/notautharized");
   next();
 };

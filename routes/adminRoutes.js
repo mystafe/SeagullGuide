@@ -3,28 +3,24 @@ const app = express();
 const router = express.Router();
 const imageupload = require("../helpers/imageUpload");
 const fs = require("fs");
+const isAuth = require("../middlewares/isAuth");
 const isAdmin = require("../middlewares/isAdmin");
-
 const adminController = require("../controllers/adminController");
 const expertiseController = require("../controllers/expertiseController");
 const userController = require("../controllers/userController");
 const storyController = require("../controllers/storyController");
+const roleController = require("../controllers/roleController");
 
+router.use(isAuth);
+
+router.use(isAdmin);
+
+isAdmin;
 //DeleteSeagull
-router.post(
-  "/seagull/delete/:seagullId",
-  isAdmin,
-  adminController.DeleteSeagull
-);
-router.get(
-  "/seagull/delete/:seagullId",
-  isAdmin,
-  adminController.GetDeletedSeagull
-);
-
+router.post("/seagull/delete/:seagullId", adminController.DeleteSeagull);
+router.get("/seagull/delete/:seagullId", adminController.GetDeletedSeagull);
 //EditSeagull;
-router.get("/seagull/:seagullId", isAdmin, adminController.GetSeagullAdmin);
-
+router.get("/seagull/:seagullId", adminController.GetSeagullAdmin);
 //UpdateSeagull
 router.post(
   "/seagull/:seagullId",
@@ -32,80 +28,71 @@ router.post(
   adminController.UpdateSeagull
 );
 //GetSeagullsAdmin
-router.get("/seagulls", isAdmin, adminController.GetSeagullsAdmin);
+router.get("/seagulls", adminController.GetSeagullsAdmin);
 //createSeagull
 router.post(
   "/seagulls",
-  isAdmin,
   imageupload.upload.single("image"),
   adminController.CreateSeagull
 );
-
 //createExpertise
 router.post(
   "/expertises",
-  isAdmin,
   imageupload.upload.single("image"),
   expertiseController.createExpertise
 );
 //ExpertiseDelete
 router.post(
   "/expertise/delete/:expertiseId",
-  isAdmin,
   expertiseController.ExpertiseDelete
 );
 //GetDeletedExpertise
 router.get(
   "/expertise/delete/:expertiseId",
-  isAdmin,
   expertiseController.GetDeletedExpertise
 );
 //GetExpertiseAdmin
-router.get(
-  "/expertise/:expertiseId",
-  isAdmin,
-  expertiseController.GetExpertiseAdmin
-);
+router.get("/expertise/:expertiseId", expertiseController.GetExpertiseAdmin);
 //UpdateExpertise
 router.post(
   "/expertise/:expertiseId",
-  isAdmin,
   imageupload.upload.single("iconUrl"),
   expertiseController.UpdateExpertise
 );
 //GetExpertisesAdmin
-router.get("/expertises", isAdmin, expertiseController.GetExpertisesAdmin);
-
+router.get("/expertises", expertiseController.GetExpertisesAdmin);
 //user Delete
-router.post("/user/delete/:id", isAdmin, userController.DeleteUserPost);
-router.get("/user/delete/:id", isAdmin, userController.DeleteUserGet);
+router.post("/user/delete/:id", userController.DeleteUserPost);
+router.get("/user/delete/:id", userController.DeleteUserGet);
+//GetAll roles
+router.get("/roles", roleController.getRoles);
+//role Delete
+router.post("/role/delete", roleController.DeleteRolePost);
+//Edit Role
+router.post("/role/edit/:id", userController.EditRolePost);
+router.get("/role/edit/:id", userController.EditRoleGet);
 //Create User
-router.post("/users/create", isAdmin, userController.CreateUserPost);
-router.get("/users/create", isAdmin, userController.CreateUserGet);
+router.post("/users/create", userController.CreateUserPost);
+router.get("/users/create", userController.CreateUserGet);
 //Edit User
-router.post("/user/edit/:id", isAdmin, userController.EditUserPost);
-router.get("/user/edit/:id", isAdmin, userController.EditUserGet);
+router.post("/user/edit/:id", userController.EditUserPost);
+router.get("/user/edit/:id", userController.EditUserGet);
 //Verify User
-router.get("/user/validate/:id", isAdmin, userController.VerifyUser);
-
+router.get("/user/validate/:id", userController.VerifyUser);
 //usersAdminList
-router.get("/users", isAdmin, userController.GetUsers);
-
+router.get("/users", userController.GetUsers);
 //createStory
-router.post("/stories/create", isAdmin, storyController.CreateStoryPost);
-router.get("/stories/create", isAdmin, storyController.CreateStoryGet);
+router.post("/stories/create", storyController.CreateStoryPost);
+router.get("/stories/create", storyController.CreateStoryGet);
 //deleteStory
-router.post("/story/delete/:id", isAdmin, storyController.DeleteStoryPost);
-router.get("/story/delete/:id", isAdmin, storyController.DeleteStoryGet);
+router.post("/story/delete/:id", storyController.DeleteStoryPost);
+router.get("/story/delete/:id", storyController.DeleteStoryGet);
 //editStory
-router.post("/story/edit/:id", isAdmin, storyController.EditStoryPost);
-
-router.get("/story/edit/:id", isAdmin, storyController.EditStoryGet);
+router.post("/story/edit/:id", storyController.EditStoryPost);
+router.get("/story/edit/:id", storyController.EditStoryGet);
 //storyAdminList
 router.get("/stories", storyController.GetStoriesAdmin);
-
 //GetAdminPage
-router.get("/", isAdmin, adminController.GetAdminPage);
-
+router.get("/", adminController.GetAdminPage);
 router.use(app);
 module.exports = router;

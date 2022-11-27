@@ -12,44 +12,52 @@
           <a class="nav-link active" aria-current="page" href="/seagulls">Seagulls</a>
         </li>
 
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/featured">Featured stories</a>
+        </li>
+
 
         <% if (isAuth) { %>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/stories">All stories</a>
+          </li>
+  
          
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/favorites">Favorites</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/admin/seagulls"
-              >Seagulls Edit</a
-            >
+            <a class="nav-link active" aria-current="page" href="/admin/stories">Stories Edit</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/admin/expertises">Expertises Edit</a>
-          </li>            
+  
+         
         <% } %>
 
        
+
+
+
+        <% if (isAuth&&isAdmin) { %>
+          
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/admin/seagulls"
+              >Seagulls Edit</a
+            >
+          </li> 
+          
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/admin/expertises">Expertises Edit</a>
+          </li>  
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/admin/users">Users Edit</a>
+          </li>
+          
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/featured">Featured stories</a>
+          <a class="nav-link active" aria-current="page" href="/admin/roles">Roles Edit</a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/stories">All stories</a>
-        </li>
-
-        <% if (isAuth) { %>
-
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/admin/users">Users Edit</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/admin/stories">Admin stories</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
-        </li>
         <% } %>
 
         <% if (!isAuth) { %>

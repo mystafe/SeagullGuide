@@ -1,15 +1,14 @@
+const Story = require("../models/seagullStoryModel");
+
 exports.GetStoriesAdmin = async (req, res) => {
-  if (req.session.isAuth) {
-    console.log("GetStoriesAdmin");
-    try {
-    } catch (error) {
-      console.log(error);
-    }
-    return res.render("adminViews/adminStories", {
-      csrfToken: req.csrfToken(),
-    });
+  try {
+    const stories = await Story.findAll();
+    console.log(stories);
+    return res.render("adminViews/adminStories", { stories });
+  } catch (error) {
+    console.log(error);
   }
-  res.redirect("/");
+  return res.render("adminViews/adminStories");
 };
 
 exports.CreateStoryGet = async (req, res) => {

@@ -1,0 +1,29 @@
+<%- include ("../partials/head",{title:"Role delete"}) %> 
+
+<body class="mx-3">
+  <%- include ("../partials/nav") %>
+  <h1 class="mb-3">Role delete page</h1>
+  <div class="container mt-3">
+    <div class="row">
+      <div class="cold-md-12 mt-3">
+        <div class="alert alert-secondary">
+          <p class="mb-3">
+            Are you sure to delete user from the role?
+          </p>
+          <form method="post" action="/admin/role/<%userid%>">
+            <input type="hidden" value="<%=csrfToken%>" name="_csrf">
+            <input type="hidden" value="<%=roleid%>" name="roleid">
+            <input type="hidden" value="<%=userid%>" name="userid">
+              
+              <button class="btn btn-danger" type="submit">Yes</button>
+              <a class="btn btn-secondary" href="/admin/roles">No</a>
+              
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include ("../partials/footer") %>
+</body>
+</html>
