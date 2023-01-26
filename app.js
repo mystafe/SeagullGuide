@@ -29,6 +29,7 @@ const Role = require("./models/roleModel");
 //Middlewares
 const locals = require("./middlewares/locals");
 const csurf = require("csurf");
+const { stringify } = require("query-string");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -60,8 +61,8 @@ Role.belongsToMany(User, { through: "userroles" });
 //populate
 (async () => {
   try {
-    // await sequelize.sync({ force: true });
-    // await dummyData();
+    //await sequelize.sync({ force: true });
+    //await dummyData();
   } catch (error) {
     console.log(error);
   }
@@ -71,6 +72,20 @@ app.use(authRoutes);
 app.use("/admin", adminRoutes);
 app.use(storyRoutes);
 app.use(seagullRoutes);
+
+const InviteeRequest = [];
+
+let req1 = { InviteeId: 1, SurveyId: "2" };
+let req2 = { InviteeId: 2, SurveyId: "2" };
+
+InviteeRequest.push(req1);
+InviteeRequest.push(req2);
+
+const requster = function () {
+  console.log(InviteeRequest);
+};
+
+requster();
 
 app.listen(3400, () => {
   console.log("server initalized...");

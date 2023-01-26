@@ -3,7 +3,6 @@ const Story = require("../models/seagullStoryModel");
 exports.GetStoriesAdmin = async (req, res) => {
   try {
     const stories = await Story.findAll();
-    console.log(stories);
     return res.render("adminViews/adminStories", { stories });
   } catch (error) {
     console.log(error);

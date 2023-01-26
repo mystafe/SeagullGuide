@@ -106,16 +106,24 @@ async function Populate() {
       {
         content: "“Wherever there are birds, there is hope”",
         imageUrl: "Cemil.jpg",
+        userId: 1,
       },
       {
         content:
           "“Birds chirping around you is a beautiful realization that life is incredibly good. Let this sound be a gentle break in your routine.”",
         imageUrl: "Nazli.jpg",
+        userId: 2,
       },
       {
         content:
           "“Every bird, every tree, every flower reminds me what a blessing and privilege it is just to be alive.”",
         imageUrl: "Capcap.jpg",
+        userId: 3,
+      },
+      {
+        content: "“Every bird is a hope for humanity”",
+        imageUrl: "Umut.jpg",
+        userId: 1,
       },
     ]);
 
