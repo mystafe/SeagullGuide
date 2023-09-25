@@ -3,95 +3,136 @@ const Expertise = require("../models/expertiseModel");
 exports.ExpertiseDelete = async function (req, res) {
   console.log("ExpertiseDelete");
   const expertiseId = req.params.expertiseId;
-  const expertise = await Expertise.findByPk(expertiseId);
+
   try {
-    await Expertise.destroy({ where: { id: expertiseId } });
+    const expertise = await Expertise.findById(expertiseId);
+
+    if (!expertise) {
+      return res.redirect(`/admin/expertises?action=is not able to delete`);
+    }
+
+    await expertise.remove();
     return res.redirect(
       `/admin/expertises?action=delete&expertiseName=${expertise.expertiseName}`
     );
-  } catch (er) {
-    console.log(er);
+  } catch (err) {
+    console.error("Error deleting expertise:", err);
+    return res.redirect(`/admin/expertises?action=is not able to delete`);
   }
-  return res.redirect(
-    `/admin/expertises?action=is not able to delete&expertiseName=${expertise.expertiseName}`
-  );
 };
+
 exports.GetDeletedExpertise = async function (req, res) {
   console.log("GetDeletedExpertise");
   const expertiseId = req.params.expertiseId;
-  const expertise = await Expertise.findByPk(expertiseId);
-  return res.render("adminViews/adminExpertiseDelete", {
-    expertise,
-    csrfToken: req.csrfToken(),
-  });
+
+  try {
+    const expertise = await Expertise.findById(expertiseId);
+    
+    if (!expertise) {
+      return res.status(404).send("Expertise not found");
+    }
+
+    return res.render("adminViews/adminExpertiseDelete", {
+      expertise,
+      // csrfToken: req.csrfToken(),
+      csrfToken: "csrf token",
+    });
+  } catch (err) {
+    console.error("Error fetching expertise:", err);
+    return res.status(500).send("Internal Server Error");
+  }
 };
+
 exports.GetExpertiseAdmin = async function (req, res) {
   console.log("GetExpertiseAdmin");
   const expertiseId = req.params.expertiseId;
+
   try {
-    const expertise = await Expertise.findByPk(expertiseId);
+    const expertise = await Expertise.findById(expertiseId);
+    
+    if (!expertise) {
+      return res.status(404).send("Expertise not found");
+    }
+
     res.render("adminViews/adminExpertiseEdit", {
-      expertise: expertise,
+      expertise,
       page: 0,
       index: 0,
       expertiseId: expertiseId,
       action: req.query.action,
       expertiseName: req.query.expertiseName,
-      csrfToken: req.csrfToken(),
+      // csrfToken: req.csrfToken(),
+      csrfToken: "csrf token",
     });
-  } catch (er) {
-    console.log(er);
+  } catch (err) {
+    console.error("Error fetching expertise:", err);
+    return res.status(500).send("Internal Server Error");
   }
 };
+
 exports.UpdateExpertise = async function (req, res) {
   console.log("UpdateExpertise");
   const expertiseId = req.body.id;
   const expertiseName = req.body.expertiseName;
-  const expertise = await Expertise.findByPk(expertiseId);
-  let iconUrl = expertise.iconUrl;
+
   try {
-    iconUrl = req.file.filename;
-  } catch (er) {
-    console.log(er);
+    const expertise = await Expertise.findById(expertiseId);
+    
+    if (!expertise) {
+      return res.status(404).send("Expertise not found");
+    }
+
+    let iconUrl = expertise.iconUrl;
+    
+    if (req.file && req.file.filename) {
+      iconUrl = req.file.filename;
+    }
+
+    await Expertise.findByIdAndUpdate(expertiseId, { expertiseName, iconUrl });
+
+    return res.redirect(
+      `/admin/expertises?action=update&expertiseName=${expertiseName}`
+    );
+  } catch (err) {
+    console.error("Error updating expertise:", err);
+    return res.status(500).send("Internal Server Error");
   }
-  await Expertise.update(
-    { expertiseName, iconUrl },
-    { where: { id: expertiseId } }
-  );
-  return res.redirect(
-    `/admin/expertises?action=update&expertiseName=${expertiseName}`
-  );
 };
+
 exports.GetExpertisesAdmin = async (req, res) => {
   console.log("GetExpertisesAdmin");
-  const expertises = await Expertise.findAll();
-  res.render("adminViews/adminExpertises", {
-    expertises: expertises,
-    expertiseName: req.query.expertiseName,
-    action: req.query.action,
-    csrfToken: req.csrfToken(),
-  });
+
+  try {
+    const expertises = await Expertise.find();
+    res.render("adminViews/adminExpertises", {
+      expertises,
+      expertiseName: req.query.expertiseName,
+      action: req.query.action,
+      // csrfToken: req.csrfToken(),
+      csrfToken: "csrf token",
+    });
+  } catch (err) {
+    console.error("Error fetching expertises:", err);
+    return res.status(500).send("Internal Server Error");
+  }
 };
+
 exports.createExpertise = async (req, res) => {
   console.log("createExpertise");
   const expertiseName = req.body.name;
   let iconUrl = "";
+
   try {
-    if (req.file.filename) {
+    if (req.file && req.file.filename) {
       iconUrl = req.file.filename;
-      console.log(iconUrl);
     }
-  } catch (er) {
-    console.log(er);
+
+    const expertise = new Expertise({ expertiseName, iconUrl });
+    await expertise.save();
+  } catch (err) {
+    console.error("Error creating expertise:", err);
   }
-  try {
-    await Expertise.create({
-      expertiseName,
-      iconUrl,
-    });
-  } catch (er) {
-    console.log(er);
-  }
+
   return res.redirect(
     `/admin/expertises?action=create&expertiseName=${expertiseName}`
   );

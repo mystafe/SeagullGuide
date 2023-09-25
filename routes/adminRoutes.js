@@ -17,23 +17,23 @@ router.use(isAdmin);
 
 isAdmin;
 //DeleteSeagull
-router.post("/seagull/delete/:seagullId", adminController.DeleteSeagull);
-router.get("/seagull/delete/:seagullId", adminController.GetDeletedSeagull);
+router.post("/seagull/delete/:seagullId", adminController.deleteSeagull);
+router.get("/seagull/delete/:seagullId", adminController.getDeletedSeagull);
 //EditSeagull;
-router.get("/seagull/:seagullId", adminController.GetSeagullAdmin);
+router.get("/seagull/:seagullId", adminController.getSeagullAdmin);
 //UpdateSeagull
 router.post(
   "/seagull/:seagullId",
   imageupload.upload.single("image"),
-  adminController.UpdateSeagull
+  adminController.updateSeagull
 );
 //GetSeagullsAdmin
-router.get("/seagulls", adminController.GetSeagullsAdmin);
+router.get("/seagulls", adminController.getSeagullsAdmin);
 //createSeagull
 router.post(
   "/seagulls",
   imageupload.upload.single("image"),
-  adminController.CreateSeagull
+  adminController.createSeagull
 );
 //createExpertise
 router.post(
@@ -93,6 +93,6 @@ router.get("/story/edit/:id", storyController.EditStoryGet);
 //storyAdminList
 router.get("/stories", storyController.GetStoriesAdmin);
 //GetAdminPage
-router.get("/", adminController.GetAdminPage);
+router.get("/", adminController.getAdminPage);
 router.use(app);
 module.exports = router;

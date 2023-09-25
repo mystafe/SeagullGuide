@@ -1,28 +1,9 @@
-const Sequelize = require("sequelize");
-const config = require("../helpers/config");
-const mysql = require("mysql2");
-const sequelize = new Sequelize(
-  config.db.database,
-  config.db.user,
-  config.db.password,
-  {
-    dialect: "mysql",
-    host: config.db.host,
-    define: { timestamps: false },
-    logging: false,
-    storage: "./session.mysql",
-  }
-);
+const mongoose = require("mongoose");
 
-async function connect() {
-  try {
-    await sequelize.authenticate();
-    console.log("my sql connection established");
-  } catch (er) {
-    console.log(er);
-  }
-}
+const conString = 'mongodb+srv://seagulldbowner:Seagul123.@cluster0.c76l2jq.mongodb.net/your-database-name';
+const conString2 = 'mongodb+srv://seagulldbowner:Seagul123.@cluster0.c76l2jq.mongodb.net/'
 
-connect();
+mongoose.connect(conString2, { useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
 
-module.exports = sequelize;
+module.exports = db;

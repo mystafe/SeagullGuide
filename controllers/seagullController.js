@@ -1,18 +1,15 @@
 const Seagull = require("../models/seagullModel");
 const Expertise = require("../models/expertiseModel");
-const { Op } = require("sequelize");
 const { pageLimit } = require("../helpers/config");
 
-exports.GetSeagullsByExpertise = async (req, res) => {
+exports.getSeagullsByExpertise = async (req, res) => {
   const expertiseId = req.params.expertiseId;
-  const expertises = await Expertise.findAll();
+  const expertises = await Expertise.find();
   let { page = 1 } = req.query;
   console.log("page: " + page + " or " + req.query.page);
-  const totalSeagulls = await Seagull.count({
-    include: {
-      model: Expertise,
-      where: { id: expertiseId },
-    },
+
+  const totalSeagulls = await Seagull.countDocuments({
+    expertises: expertiseId,
   });
 
   const totalPages = Math.ceil(totalSeagulls / pageLimit);
@@ -20,11 +17,13 @@ exports.GetSeagullsByExpertise = async (req, res) => {
     console.error("page overloaded");
     page = 1;
   }
-  const seagulls = await Seagull.findAll({
-    limit: pageLimit,
-    offset: (page - 1) * pageLimit,
-    include: { model: Expertise, where: { id: expertiseId } },
-  });
+
+  const seagulls = await Seagull.find({
+    expertises: expertiseId,
+  })
+    .limit(pageLimit)
+    .skip((page - 1) * pageLimit)
+    .populate("expertises");
 
   return res.render("seagullViews/seagulls", {
     seagulls: seagulls,
@@ -35,73 +34,56 @@ exports.GetSeagullsByExpertise = async (req, res) => {
     expertiseId,
     seagullName: req.query.seagullName,
     action: req.query.action,
-    csrfToken: req.csrfToken(),
+    // csrfToken: req.csrfToken(),
+    csrfToken: "req.csrfToken()",
   });
 };
 
-exports.GetSeagull = async (req, res) => {
+exports.getSeagull = async (req, res) => {
   const urlSlug = String(req.params.slug).toLowerCase().trim();
   const seagull = await Seagull.findOne({
-    where: { urlSlug },
-    include: { model: Expertise },
-  });
+    urlSlug: urlSlug,
+  }).populate("expertises");
 
   const expertises = seagull.expertises;
   res.render("seagullViews/seagullDetail", {
     seagull,
     expertises,
-    csrfToken: req.csrfToken(),
+    // csrfToken: req.csrfToken(),
+    csrfToken: "req.csrfToken()",
   });
 };
-exports.GetSeagulls = async (req, res) => {
+
+exports.getSeagulls = async (req, res) => {
   console.log("getSeagulls");
   let { page = 1 } = req.query;
-  let totalSeagulls = await Seagull.count();
-  let totalPages = Math.ceil(totalSeagulls / pageLimit);
+
+  const totalSeagulls = await Seagull.countDocuments();
+
+  const totalPages = Math.ceil(totalSeagulls / pageLimit);
   if (page > totalPages) {
     console.error("page overloaded");
     page = 1;
   }
+
   let seagulls;
   if (String(req.url).startsWith("/favorites")) {
-    let seagulls = await Seagull.findAndCountAll({
-      where: { isFavorite: { [Op.eq]: true } },
-      raw: true,
-      limit: pageLimit,
-      offset: (page - 1) * pageLimit,
-    });
-    totalSeagulls = seagulls.count;
-    totalPages = Math.ceil(totalSeagulls / pageLimit);
-    if (page > totalPages) {
-      console.error("page overloaded");
-      page = 1;
-      seagulls = await Seagull.findAndCountAll({
-        where: { isFavorite: { [Op.eq]: true } },
-        raw: true,
-        limit: pageLimit,
-        offset: (page - 1) * pageLimit,
-      });
-    }
-
-    const expertises = await Expertise.findAll();
-    return res.render("seagullViews/favoriteSeagulls", {
-      seagulls: seagulls.rows,
-      totalSeagulls,
-      totalPages,
-      currentPage: page,
-      expertises,
-      expertiseId: 0,
-    });
+    seagulls = await Seagull.find({
+      isFavorite: true,
+    })
+      .limit(pageLimit)
+      .skip((page - 1) * pageLimit)
+      .populate("expertises");
   } else {
-    seagulls = await Seagull.findAndCountAll({
-      raw: true,
-      limit: pageLimit,
-      offset: (page - 1) * pageLimit,
-    });
+    seagulls = await Seagull.find()
+      .limit(pageLimit)
+      .skip((page - 1) * pageLimit)
+      .populate("expertises");
   }
-  const expertises = await Expertise.findAll();
+
+  const expertises = await Expertise.find();
   res.render("seagullViews/seagulls", {
-    seagulls: seagulls.rows,
+    seagulls: seagulls,
     totalSeagulls,
     totalPages,
     currentPage: page,
@@ -109,7 +91,8 @@ exports.GetSeagulls = async (req, res) => {
     expertiseId: 0,
   });
 };
-exports.GetMainPage = async (req, res) => {
+
+exports.getMainPage = async (req, res) => {
   console.log("GetMainPage");
   const randomNames = [
     "Bora",
@@ -123,12 +106,12 @@ exports.GetMainPage = async (req, res) => {
     "Umut",
   ];
   const randomNumber = Math.floor(Math.random() * randomNames.length);
-  try {
-  } catch (error) {
-    console.log(error);
-  }
+
+  // Handle any necessary logic here.
+
   return res.render("main", {
     randomSeagull: randomNames[randomNumber],
-    csrfToken: req.csrfToken(),
+    // csrfToken: req.csrfToken(),
+    csrfToken: "req.csrfToken()",
   });
 };

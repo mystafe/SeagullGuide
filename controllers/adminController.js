@@ -1,48 +1,44 @@
 const Seagull = require("../models/seagullModel");
 const Expertise = require("../models/expertiseModel");
-const { Op } = require("sequelize");
-const SlugField = require("../helpers/slugfield");
+const mongoose = require("mongoose");
+const slugify = require("slugify");
 
-exports.CreateSeagull = async (req, res) => {
+exports.createSeagull = async (req, res) => {
   console.log("CreateSeagull");
   const seagullName = String(req.body.seagullName).trim();
-  let urlSlug = SlugField(
-    req.body.urlSlug != undefined
-      ? String(req.body.urlSlug).trim()
-      : SlugField(seagullName)
-  );
-  const isAlive = req.body.isAlive == "" ? 1 : 0;
+  let urlSlug = req.body.urlSlug
+    ? String(req.body.urlSlug).trim()
+    : slugify(seagullName);
+  const isAlive = req.body.isAlive === "" ? true : false;
   let isFavorite;
   if (req.body.likeStatus) {
     isFavorite = req.body.isFavorite;
     id = req.body.seagullId;
     const likeAction = isFavorite == 1 ? "like" : "unlike";
 
-    await Seagull.update(
-      {
-        isFavorite: isFavorite,
-      },
-      {
-        where: { id },
-      }
+    await Seagull.updateOne(
+      { _id: mongoose.Types.ObjectId(id) },
+      { isFavorite: isFavorite }
     );
     return res.redirect(
       `/admin/seagulls?action=${likeAction}&seagullName=${seagullName}`
     );
   }
   if (req.body.isFavorite) {
-    isFavorite = req.body.isFavorite == "" ? 1 : req.body.isFavorite;
-  } else isFavorite = 0;
+    isFavorite = req.body.isFavorite === "" ? true : false;
+  } else {
+    isFavorite = false;
+  }
   let imageUrl = "";
   try {
-    if (typeof req.file.filename != undefined) {
+    if (req.file.filename) {
       imageUrl = req.file.filename;
     }
   } catch (er) {
     console.error(er.message);
   }
   const expertiseIds = req.body.expertiseIds;
-  const seagull = await Seagull.create({
+  const seagull = new Seagull({
     seagullName,
     urlSlug,
     imageUrl,
@@ -50,9 +46,10 @@ exports.CreateSeagull = async (req, res) => {
     isFavorite,
   });
 
-  if (expertiseIds != undefined) {
+  if (expertiseIds) {
     try {
-      await seagull.addExpertises(expertiseIds);
+      seagull.expertises = expertiseIds; // Assuming 'expertises' is an array field in the Seagull model
+      await seagull.save();
     } catch (er) {
       console.log(er);
     }
@@ -62,120 +59,121 @@ exports.CreateSeagull = async (req, res) => {
     `/admin/seagulls?action=create&seagullName=${seagullName}`
   );
 };
-exports.UpdateSeagull = async (req, res) => {
+
+exports.updateSeagull = async (req, res) => {
   console.log("UpdateSeagull");
   const expertiseIds = req.body.expertiseIds;
   const seagullId = req.body.seagullId;
   const seagullName = req.body.seagullName;
-  const urlSlug = SlugField(
-    req.body.urlSlug != undefined
-      ? String(req.body.urlSlug).trim()
-      : SlugField(seagullName)
-  );
-  const isAlive = req.body.isAlive == "" ? true : false;
+  const urlSlug = req.body.urlSlug
+    ? String(req.body.urlSlug).trim()
+    : slugify(seagullName);
+  const isAlive = req.body.isAlive === "" ? true : false;
   const expertiseId = req.body.expertiseId;
-  const isFavorite = req.body.isFavorite == "" ? true : false;
-  const seagull = await Seagull.findByPk(seagullId, {
-    include: { model: Expertise },
-  });
+  const isFavorite = req.body.isFavorite === "" ? true : false;
 
   try {
-    if (expertiseIds == undefined) {
-      await seagull.removeExpertises(seagull.expertises);
+    let seagull = await Seagull.findById(seagullId).populate("expertises");
+    
+    if (expertiseIds === undefined) {
+      seagull.expertises = [];
     } else {
-      await seagull.removeExpertises(seagull.expertises);
-      const selectedExpertises = await Expertise.findAll({
-        where: {
-          id: {
-            [Op.in]: expertiseIds,
-          },
-        },
+      const selectedExpertises = await Expertise.find({
+        _id: { $in: expertiseIds.map(id => mongoose.Types.ObjectId(id)) }
       });
-
-      await seagull.addExpertises(selectedExpertises);
-      await seagull.save();
+      seagull.expertises = selectedExpertises;
     }
+
+    let image = seagull.imageUrl;
+
+    try {
+      image = req.file.filename;
+    } catch (er) {
+      console.log(er.message);
+    }
+
+    seagull.seagullName = seagullName;
+    seagull.urlSlug = urlSlug;
+    seagull.isAlive = isAlive;
+    seagull.isFavorite = isFavorite;
+    seagull.expertiseId = expertiseId;
+    seagull.imageUrl = image;
+
+    await seagull.save();
+
   } catch (er) {
     console.log(er);
   }
-  let image = seagull.imageUrl;
-
-  try {
-    image = req.file.filename;
-  } catch (er) {
-    console.log(er.message);
-  }
-
-  await Seagull.update(
-    {
-      seagullName,
-      urlSlug,
-      isAlive,
-      isFavorite,
-      expertiseId,
-      imageUrl: image,
-    },
-    {
-      where: { id: seagullId },
-    }
-  );
 
   return res.redirect(
     `/admin/seagulls?action=update&seagullName=${seagullName}`
   );
 };
-exports.GetSeagullsAdmin = async (req, res) => {
+
+exports.getSeagullsAdmin = async (req, res) => {
   console.log("GetSeagullsAdmin");
-  const seagulls = await Seagull.findAll({ include: { model: Expertise } });
-  const expertises = await Expertise.findAll();
-  res.render("adminViews/adminSeagulls", {
-    seagulls,
-    expertises,
-    seagullName: req.query.seagullName,
-    action: req.query.action,
-    csrfToken: req.csrfToken(),
-  });
+  try {
+    const seagulls = await Seagull.find().populate("expertises");
+    const expertises = await Expertise.find();
+    res.render("adminViews/adminSeagulls", {
+      seagulls,
+      expertises,
+      seagullName: req.query.seagullName,
+      action: req.query.action,
+      // csrfToken: req.csrfToken(),
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
-exports.GetDeletedSeagull = async (req, res) => {
+
+exports.getDeletedSeagull = async (req, res) => {
   console.log("GetDeletedSeagull");
   const seagullId = req.params.seagullId;
-  const seagull = await Seagull.findByPk(seagullId);
-  res.render("adminViews/adminSeagullDelete", {
-    seagull,
-    csrfToken: req.csrfToken(),
-  });
+  try {
+    const seagull = await Seagull.findById(seagullId);
+    res.render("adminViews/adminSeagullDelete", {
+      seagull,
+      // csrfToken: req.csrfToken(),
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
-exports.DeleteSeagull = async function (req, res) {
+
+exports.deleteSeagull = async (req, res) => {
   console.log("DeleteSeagull");
   const seagullId = req.params.seagullId;
-  const seagull = await Seagull.findByPk(seagullId);
-  await Seagull.destroy({
-    where: {
-      id: seagullId,
-    },
-  });
-  res.redirect(
-    `/admin/seagulls?action=delete&seagullName=${seagull.seagullName}`
-  );
+  try {
+    await Seagull.findByIdAndRemove(seagullId);
+    res.redirect(`/admin/seagulls?action=delete&seagullName=${seagull.seagullName}`);
+  } catch (error) {
+    console.error(error);
+  }
 };
-exports.GetSeagullAdmin = async (req, res) => {
+
+exports.getSeagullAdmin = async (req, res) => {
   console.log("GetSeagullAdmin");
   const seagullId = req.params.seagullId;
-  const seagull = await Seagull.findByPk(seagullId, {
-    include: { model: Expertise },
-  });
-  const seagulls = await Seagull.findAll();
-  const expertises = await Expertise.findAll();
-  res.render("adminViews/adminSeagullEdit", {
-    seagulls: seagulls,
-    seagull: seagull,
-    expertises: expertises,
-    seagullName: req.query.seagullName,
-    action: req.query.action,
-    csrfToken: req.csrfToken(),
-  });
+  try {
+    const seagull = await Seagull.findById(seagullId).populate("expertises");
+    const seagulls = await Seagull.find();
+    const expertises = await Expertise.find();
+    res.render("adminViews/adminSeagullEdit", {
+      seagulls: seagulls,
+      seagull: seagull,
+      expertises: expertises,
+      seagullName: req.query.seagullName,
+      action: req.query.action,
+      // csrfToken: req.csrfToken(),
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
-exports.GetAdminPage = async (req, res) => {
+
+exports.getAdminPage = async (req, res) => {
   console.log("GetAdminPage");
-  res.render("main", { csrfToken: req.csrfToken() });
+  // res.render("main", { csrfToken: req.csrfToken() });
+  res.render("main", { csrfToken: "csrf token" });
 };

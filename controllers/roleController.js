@@ -1,65 +1,44 @@
-const sequelize = require("../data/db");
 const Role = require("../models/roleModel");
 const User = require("../models/userModel");
 
 exports.getRoles = async (req, res) => {
   const username = req.query.username;
   const action = req.query.action;
-  const roles = await Role.findAll({
-    include: {
-      model: User,
-    },
-  });
 
   try {
+    const roles = await Role.find().populate("users");
+    return res.render("adminViews/adminRoles", {
+      roles,
+      username,
+      action,
+    });
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching roles:", error);
+    return res.status(500).send("Internal Server Error");
   }
-  return res.render("adminViews/adminRoles", {
-    roles,
-    username,
-    action,
-  });
 };
 
 exports.DeleteRolePost = async (req, res) => {
   console.log("DeleteRolePost");
-  console.log(req.body);
   const roleid = req.body.roleid;
   const userid = req.body.userid;
+
   try {
-    const { QueryTypes } = require("sequelize");
-    const query = await sequelize.query(
-      `delete FROM userroles where userId=${userid} and roleId=${roleid}`
+    await User.findByIdAndUpdate(
+      userid,
+      { $pull: { roles: roleid } },
+      { new: true }
     );
 
-    //    const query = await sequelize.query("select top 1 * from userroles");
-    console.log(query);
+    return res.redirect(`/admin/roles?action=remove&userid=${userid}`);
   } catch (error) {
-    console.log(error);
+    console.error("Error deleting role from user:", error);
+    return res.status(500).send("Internal Server Error");
   }
-  const username = req.body.username;
-
-  try {
-  } catch (error) {
-    console.log(error);
-  }
-  return res.redirect(`/admin/roles?action=remove&username=${username}`);
 };
+
 exports.DeleteRoleGet = async (req, res) => {
   console.log("DeleteRoleGet");
-  const id = req.params.id;
-
-  console.log(id);
-  console.log(req.body);
-
-  try {
-    const roleid = req.body.roleid;
-    const userid = req.body.userid;
-
-    console.log(roleid, userid);
-  } catch (error) {
-    console.log(error);
-  }
-  // res.render("adminViews/adminRoleDelete");
+  // To do
+  return res.status(404).send("Not Found");
 };

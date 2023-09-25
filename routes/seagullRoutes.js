@@ -1,19 +1,16 @@
 const express = require("express");
-const app = express();
 const router = express.Router();
 const seagullController = require("../controllers/seagullController");
 
-//GetFavoriteSeagulls
-router.get("/favorites", seagullController.GetSeagulls);
-//GetSeagull
-router.get("/seagull/:slug", seagullController.GetSeagull);
-//GetSeagulls
-router.get("/seagulls", seagullController.GetSeagulls);
-//GetSeagullsByExpertise
-router.get("/expertise/:expertiseId", seagullController.GetSeagullsByExpertise);
-//GetMainPage
-router.get("/", seagullController.GetMainPage);
-
-router.use(app);
+// GetFavoriteSeagulls
+router.get("/favorites", seagullController.getSeagulls);
+// GetSeagull
+router.get("/seagull/:slug", seagullController.getSeagull);
+// GetSeagulls
+router.get("/seagulls", seagullController.getSeagulls);
+// GetSeagullsByExpertise
+router.get("/expertise/:expertiseId", seagullController.getSeagullsByExpertise);
+// GetMainPage
+router.get("/", seagullController.getMainPage);
 
 module.exports = router;
